@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    if (Auth::check()) {
-        return view('books.index');
-    } 
-    else {
-        return view('users.signin');
+Route::get('/', function() {
+    if (auth()->guard('admin')->check()) {
+        return view('admin.dashboard');
     }
+    return redirect('/admin/login');
 });
+
+Route::get('/admin/login', [AdminController::class, 'login']);
+
+Route::post('/admin/authenticate', [AdminController::class, 'authenticate']);
