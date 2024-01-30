@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BookController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,3 +25,5 @@ Route::get('/', function() {
 Route::get('/admin/login', [AdminController::class, 'login']);
 
 Route::post('/admin/authenticate', [AdminController::class, 'authenticate']);
+
+Route::get('/book/list', [BookController::class, 'list']);
