@@ -20,15 +20,15 @@
                 <label for="password">Password</label>
                 <input type="password" placeholder="Password" name="password" id="password" class="border border-black rounded-md p-2">
             </div>
-            <div class="mb-4 w-[200px] flex">
+            <div class="mb-2 w-[200px] flex">
                 <input type="checkbox" name="remember" id="remember">
                 <label class="ml-1" for="remember">Stay logged in?</label>
             </div>
             @error('username')
-                <div class="text-red-500 text-sm mt-1">{{$message}}</div>
+                <div class="text-red-500 text-sm my-1">{{$message}}</div>
             @enderror
             @error('password')
-                <div class="text-red-500 text-sm mt-1">{{$message}}</div>
+                <div class="text-red-500 text-sm my-1">{{$message}}</div>
             @enderror
             <button type="submit" class="border border-black rounded-lg px-6 py-2">Log in</button>
         </form>
