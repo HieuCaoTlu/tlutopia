@@ -38,8 +38,8 @@
 </div>
 
 <div id="add-book-overlay" class="hidden fixed top-0 left-0 bg-black bg-opacity-70 h-full w-full items-center justify-center">
-    <div id="add-book-modal" class="h-[80%] w-[80%] bg-white rounded-md">
-
+    <div id="add-book-modal" class="h-[80%] w-[80%] bg-white rounded-md relative">
+        <button class=""></button>
     </div>
 </div>
 <script>
