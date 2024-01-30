@@ -8,14 +8,13 @@
     @vite('resources/css/app.css')
 </head>
 <body>
-    <nav class="border-b-gray-50 border-b">
-        <ul class="flex items-center justify-center  border-b border-b-gray-500 h-16 bg-slate-200 font-semibold">
-            <li class="h-full"><a href="/" class="block h-full flex items-center hover:text-white hover:bg-slate-500 px-3">Books</a></li>
-            <li class="h-full"><a href="" class="block h-full flex items-center hover:text-white hover:bg-slate-500 px-3">Majors</a></li>
-            <li class="h-full"><a href="" class="block h-full flex items-center hover:text-white hover:bg-slate-500 px-3">Courses</a></li>
+    <nav class="flex justify-between items-center border-b border-b-gray-500 bg-slate-200 px-4">
+        <ul class="flex items-center justify-center font-semibold h-16">
+            <li class="h-full"><a href="/book/list" class="block h-full flex items-center hover:text-white hover:bg-slate-500 px-3">Books</a></li>
             <li class="h-full"><a href="" class="block h-full flex items-center hover:text-white hover:bg-slate-500 px-3">Loans</a></li>
             <li class="h-full"><a href="" class="block h-full flex items-center hover:text-white hover:bg-slate-500 px-3">Accounts</a></li>
         </ul>
+        <div><a href="/admin/logout" class="hover:underline">Log out</a></div>
     </nav>
     <div>
         @yield('content')
