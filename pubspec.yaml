@@ -9,6 +9,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  http:
+  mysql1:
 
 dev_dependencies:
   flutter_test:
@@ -28,4 +30,16 @@ flutter:
             weight: 500
           - asset: fonts/font_bold.ttf
             weight: 700
+  assets:
+    - assets/images/logo.png
+    - assets/images/bg.png
+    - assets/images/bg1.png
+    - assets/images/bg2.png
+    - assets/images/bg3.png
+    - assets/images/ft1.png
+    - assets/images/ft2.png
+    - assets/images/ft3.png
+    - assets/images/ft4.png
+
+
 
