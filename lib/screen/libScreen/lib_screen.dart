@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tlutopia/object/Cart.dart';
+import 'package:tlutopia/object/Schedule.dart';
 import 'cart_fragment.dart';
 import 'library_fragment.dart';
 import 'search_fragment.dart';
@@ -13,11 +14,12 @@ class LibraryScreen extends StatefulWidget {
 
 class _LibraryScreenState extends State<LibraryScreen> {
   final Cart cart = Cart();
+  final BookingCalendar calendar = BookingCalendar();
   int _selectedIndex = 0;
   List<Widget> get _widgetOptions => [
         LibraryFragment(cart),
         SearchFragment(cart),
-        CartFragment(cart),
+        CartFragment(false, cart),
       ];
 
   void _onItemTapped(int index) {

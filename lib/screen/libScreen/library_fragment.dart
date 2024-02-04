@@ -14,7 +14,7 @@ class LibraryFragment extends StatefulWidget {
 class _LibraryFragmentState extends State<LibraryFragment> {
   final List<Book> collection1 = [
     Book(
-        "Sword Art Online",
+        "Sword Art OnlineSword ArtOnlineSwordArtOnlineSwordArt Online",
         "Hieu",
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         "2000",
@@ -195,7 +195,6 @@ class _BookContentState extends State<BookContent> {
                           maxLines: 1,
                           softWrap: false,
                           style: const TextStyle(
-                            fontFamily: "Roboto",
                             color: Colors.black,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
@@ -207,7 +206,6 @@ class _BookContentState extends State<BookContent> {
                           maxLines: 1,
                           softWrap: false,
                           style: const TextStyle(
-                            fontFamily: "Roboto",
                             color: Colors.black,
                             fontSize: 15,
                             fontWeight: FontWeight.w400,

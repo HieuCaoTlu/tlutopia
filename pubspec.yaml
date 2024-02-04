@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   http:
-  mysql1:
+  intl:
 
 dev_dependencies:
   flutter_test:

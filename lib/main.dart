@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tlutopia/screen/firstScreen/login_screen.dart';
 import 'package:tlutopia/screen/libScreen/lib_screen.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+void main() async {
+  await initializeDateFormatting('vi_VN', null);
   runApp(const MainApp());
 }
 

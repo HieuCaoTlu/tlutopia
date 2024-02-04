@@ -1,9 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:tlutopia/screen/flow_screen.dart';
 import 'package:http/http.dart' as http;
-
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {

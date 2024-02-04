@@ -64,7 +64,7 @@ class _DetailBookState extends State<DetailBook> {
                   widget.item.bookName,
                   overflow: TextOverflow.clip,
                   style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.w700),
+                      fontSize: 25, fontWeight: FontWeight.w700),
                 ),
                 const Divider(
                   height: 20,
@@ -180,7 +180,7 @@ class _DetailBookState extends State<DetailBook> {
                       'Thêm vào giỏ sách',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 17,
+                        fontSize: 15,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -211,7 +211,8 @@ class _DetailBookState extends State<DetailBook> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CartFragment(widget.cart)),
+                              builder: (context) =>
+                                  CartFragment(true, widget.cart)),
                         );
                       } else {
                         // _showSnackbar('Hết hàng');
@@ -227,7 +228,7 @@ class _DetailBookState extends State<DetailBook> {
                       'Đặt ngay',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 17,
+                        fontSize: 15,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
