@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'notification_card.dart';
 
 class NotifyScreen extends StatefulWidget {
   const NotifyScreen({super.key});
@@ -8,8 +12,43 @@ class NotifyScreen extends StatefulWidget {
 }
 
 class _NotifyScreenState extends State<NotifyScreen> {
-  final List<String> entries = <String>['Thông báo thư viện', 'Thông báo chủ nhiệm', 'Thông báo nào đó'];
-  final List<String> colorCodes = <String>['demo', 'demo1', 'demo2'];
+  List<NotificationInformation> data = [];
+  @override
+  void initState() {
+    super.initState();
+    data = [];
+    fetchData();
+  }
+
+  List<NotificationInformation> convertMapToList(Map<String, dynamic> data) {
+    List<NotificationInformation> list = [];
+    data.forEach((key, value) {
+      for (int i = 0; i < value.length; i++) {
+        list.add(NotificationInformation(
+            value[i]['title'], value[i]['source'], value[i]['description']));
+      }
+    });
+    return list;
+  }
+
+  Future<void> fetchData() async {
+    // Gửi yêu cầu GET đến server
+    var url = Uri.parse('http://192.168.1.10/aserver/notify.php');
+    var response = await http.get(url);
+
+    // Kiểm tra xem yêu cầu có thành công không (status code 200)
+    if (response.statusCode == 200) {
+      // Chuyển đổi dữ liệu JSON thành danh sách đối tượng
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      setState(() {
+        data = convertMapToList(jsonData);
+      });
+    } else {
+      // Xử lý lỗi nếu có
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -38,64 +77,60 @@ class _NotifyScreenState extends State<NotifyScreen> {
         Padding(
           padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
           child: ListView.builder(
-            shrinkWrap: true, // Ensures ListView takes only required space
-            physics:
-                const NeverScrollableScrollPhysics(), // Disables scrolling within ListView
-            itemCount: entries.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: data.length,
             itemBuilder: (context, index) {
-              return NotificationCard(
-                  entries[index], colorCodes[index].toString());
+              return NotificationCard(data[index]);
             },
           ),
         ),
+        if (data.isNotEmpty)
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.fromLTRB(40, 80, 40, 0),
+            child: ElevatedButton(
+              style: const ButtonStyle(
+                shadowColor: MaterialStatePropertyAll(Colors.transparent),
+                backgroundColor: MaterialStatePropertyAll(Color(0xffECECEC)),
+              ),
+              onPressed: clearAllNotifications,
+              child: const Text(
+                'Xóa tất cả',
+                style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400),
+              ),
+            ),
+          ),
       ]),
     );
   }
+
+  void clearAllNotifications() {
+    setState(() {
+      data.clear();
+    });
+  }
 }
 
-class NotificationCard extends StatelessWidget {
+class NotificationInformation {
   final String title;
-  // final String detail;
   final String source;
-  final IconData icon = Icons.new_releases_rounded;
-  const NotificationCard(this.title, this.source, {super.key});
+  final String description;
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xffECECEC),
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      margin: const EdgeInsets.fromLTRB(0, 15, 0, 5),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-        child: Row(
-          children: [
-            Icon(
-              icon,
-              size: 45,
-              color: const Color(0xff3788FF),
-            ),
-            const SizedBox(
-              width: 20,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  source,
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
+  NotificationInformation(this.title, this.source, this.description);
+
+  String getTitle() {
+    return title;
+  }
+
+  String getSource() {
+    return source;
+  }
+
+  String getDescription() {
+    return description;
   }
 }

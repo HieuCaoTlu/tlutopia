@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tlutopia/screen/flow_screen.dart';
+import 'package:tlutopia/screen/firstScreen/login_screen.dart';
+import 'package:tlutopia/screen/libScreen/lib_screen.dart';
 
 void main() {
   runApp(const MainApp());
@@ -13,8 +14,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'PlusJakartaSans'),
       debugShowCheckedModeBanner: false,
-      home: const FlowScreen(),
+      home: const LibraryScreen(),
     );
   }
 }
-

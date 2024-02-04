@@ -4,7 +4,7 @@ class AppTheme extends StatelessWidget {
   final String title = 'Chủ đề: TLU';
   // final String detail;
   final String source = 'Bấm để chọn chủ đề khác';
-  final IconData icon = Icons.dark_mode_rounded;
+  final IconData icon = Icons.light_mode_rounded;
   const AppTheme({super.key});
 
   @override
@@ -22,7 +22,7 @@ class AppTheme extends StatelessWidget {
               Icon(
                 icon,
                 size: 45,
-                color: Colors.black87,
+                color: const Color.fromARGB(221, 72, 72, 72),
               ),
               const SizedBox(
                 width: 20,

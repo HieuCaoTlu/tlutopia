@@ -4,7 +4,14 @@ import 'package:tlutopia/screen/accScreen/apptheme.dart';
 import 'information.dart';
 
 class AccountScreen extends StatefulWidget {
-  const AccountScreen({super.key});
+  final String studentName;
+  final String studentCode;
+  final String studentPhoneNum;
+  const AccountScreen(
+      {required this.studentName,
+      required this.studentCode,
+      required this.studentPhoneNum,
+      super.key});
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
@@ -39,7 +46,14 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
             ]),
           ),
-          const Column(children: [Information(), AppTheme()]),
+          Column(children: [
+            Information(
+              studentName: widget.studentName,
+              studentCode: widget.studentCode,
+              studentPhoneNum: widget.studentPhoneNum,
+            ),
+            const AppTheme()
+          ]),
           const Padding(
             padding: EdgeInsets.fromLTRB(40, 40, 40, 0),
             child: Column(

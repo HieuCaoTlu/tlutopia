@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:tlutopia/screen/libScreen/lib_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String name;
+  const HomeScreen({required this.name, super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final String name = 'Hiếu';
   final bool schedule = false;
+
+  String getMainName() {
+    List<String> names = widget.name.split(' ');
+    if (names.isNotEmpty) {
+      return names.last;
+    } else {
+      return ''; // hoặc giá trị mặc định khác tùy bạn
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Xin chào, $name!",
+                  "Xin chào, ${getMainName()}!",
                   style: const TextStyle(
                       fontSize: 30, fontWeight: FontWeight.w700),
                 ),
@@ -64,8 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Feature('assets/images/ft1.png'),
-                    Feature('assets/images/ft2.png')
+                    Feature('assets/images/ft1.png', 0),
+                    Feature('assets/images/ft2.png', 1)
                   ],
                 ),
                 Divider(
@@ -75,8 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Feature('assets/images/ft3.png'),
-                    Feature('assets/images/ft4.png')
+                    Feature('assets/images/ft3.png', 2),
+                    Feature('assets/images/ft4.png', 3)
                   ],
                 ),
               ],
@@ -118,18 +128,34 @@ class RecentSchedule extends StatelessWidget {
 
 class Feature extends StatelessWidget {
   final String link;
-  const Feature(this.link, {super.key});
+  final int number;
+  const Feature(this.link, this.number, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          // Navigator.push(
-          // context,
-          // MaterialPageRoute(
-          //   builder: (context) => Null()
-          // ),
-          // );
+          switch (number) {
+            case 0:
+              // Xử lý khi number là 0
+              break;
+            case 1:
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LibraryScreen(),
+                ),
+              );
+              break;
+            case 2:
+              // Xử lý khi number là 2
+              break;
+            case 3:
+              // Xử lý khi number là 3
+              break;
+            default:
+            // Xử lý mặc định nếu number không trùng với bất kỳ case nào
+          }
         },
         child: Image(
           image: AssetImage(link),
