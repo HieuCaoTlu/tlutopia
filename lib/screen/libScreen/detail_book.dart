@@ -46,8 +46,8 @@ class _DetailBookState extends State<DetailBook> {
               children: [
                 Container(
                   color: const Color.fromARGB(27, 124, 124, 124),
-                  height: 300,
-                  width: 200,
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  width: MediaQuery.of(context).size.width * 0.4,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image(
@@ -112,7 +112,7 @@ class _DetailBookState extends State<DetailBook> {
                   ),
                   child: Text(
                     widget.item.description,
-                    maxLines: 5,
+                    maxLines: 4,
                     textAlign: TextAlign.justify, // Đổi text nút nếu cần thiết
                     style: const TextStyle(
                       color: Color.fromARGB(255, 141, 141, 141),
