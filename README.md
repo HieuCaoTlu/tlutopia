@@ -1,9 +1,9 @@
-# tlutopia
-[5/2/24] Unreleased Version 0.5:
+# tlutopia 🔖💌
+[5/2/24] 🏫 Unreleased Version 0.5:
 - Cách để chạy: Bắt buộc phải gõ "flutter pub get" ở terminal để khởi tạo
 - Trong code có 1 tài khoản toàn quyền tên admin, pass: admin, mọi người có thể dùng nó để đăng nhập
 
-Bản 0.5 có gì?:
+🆕 Bản 0.5 có gì?:
 - Code server ở branch riêng server-thanh
 - Code client ở master, bao gồm các tính năng sau:
   + Đặt lịch hẹn mượn sách, thay đổi tài khoản, xem lại các lịch hẹn
