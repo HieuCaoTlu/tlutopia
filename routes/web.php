@@ -27,3 +27,7 @@ Route::get('/admin/login', [AdminController::class, 'login']);
 Route::post('/admin/authenticate', [AdminController::class, 'authenticate']);
 
 Route::get('/book/list', [BookController::class, 'list']);
+
+Route::post('/book/store', [BookController::class, 'store']);
+
+Route::post('/book/update', [BookController::class, 'update']);
