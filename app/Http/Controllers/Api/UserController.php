@@ -20,9 +20,7 @@ class UserController extends Controller
             ], 401);
         }
 
-        return response()->json([
-            'message' => "Đăng nhập thành công"
-        ]);
+        return response()->json(auth()->user());
         
     }
 
@@ -33,9 +31,24 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $user = User::create($request->all());
+        try {
+            $formFields = $request->validate([
+                'student_name' => 'required',
+                'student_code' => 'required',
+                'phone' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+            $formFields['status'] = 'active';
+            $formFields['password'] = bcrypt($formFields['password']);
+            $user = User::create($formFields);
 
-        return response()->json($user, 201);
+            return response()->json($user, 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Failed to create user. ' . $e->getMessage()
+            ], 400);
+        }
     }
 
     public function show(User $user)
@@ -45,9 +58,14 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $user->update($request->all());
-
-        return response()->json($user);
+        try {
+            $user->update($request->all());
+            return response()->json($user);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => 'Error updating user. '. $e->getMessage()
+            ]);
+        }
     }
 
     public function destroy(User $user)

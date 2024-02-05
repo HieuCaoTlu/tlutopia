@@ -9,6 +9,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Loan extends Model
 {
     protected $table = 'loan';
+    public $timestamps = false;
+    protected $fillable = [
+        'book_id',
+        'user_id',
+        'loan_date',
+        'return_date',
+        'due_date',
+        'status'
+    ];
     use HasFactory;
 
     public function book() : BelongsTo {

@@ -11,6 +11,18 @@ class Book extends Model
     protected $table = 'book';
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'author',
+        'major',
+        'description',
+        'publish_date',
+        'quantity',
+        'cover'
+    ];
+
+    public $timestamps = false;
+
     public function loans(): HasMany {
         return $this->hasMany(Loan::class, 'book_id');
     }
