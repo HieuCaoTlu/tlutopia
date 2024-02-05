@@ -12,4 +12,22 @@ class BookController extends Controller
             'bookList' => Book::paginate(10)
         ]);
     }
+
+    public function store(Request $request) {
+        //dd($request);
+        $formFields = $request->validate([
+            'title' => 'required',
+            'author' => 'required',
+            'major' => 'required',
+            'description' => 'required',
+            'publish_date' => 'required',
+            'cover' => 'required'
+        ]);
+        if (!$request->input('quantity')) 
+            $formFields['quantity'] = 0;
+        else 
+            $formFields['quantity'] = $request->input('quantity');
+        Book::create($formFields);
+        return redirect()->back();
+    }
 }
