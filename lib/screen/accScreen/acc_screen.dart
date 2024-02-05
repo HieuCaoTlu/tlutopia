@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tlutopia/object/User.dart';
 import 'package:tlutopia/screen/accScreen/apptheme.dart';
 
 import 'information.dart';
 
 class AccountScreen extends StatefulWidget {
-  final String studentName;
-  final String studentCode;
-  final String studentPhoneNum;
-  const AccountScreen(
-      {required this.studentName,
-      required this.studentCode,
-      required this.studentPhoneNum,
-      super.key});
+  const AccountScreen({super.key});
 
   @override
   State<AccountScreen> createState() => _AccountScreenState();
@@ -20,6 +14,7 @@ class AccountScreen extends StatefulWidget {
 class _AccountScreenState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
+    final userProvider = UserProvider.ofNonNull(context);
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: SizedBox(
@@ -48,9 +43,9 @@ class _AccountScreenState extends State<AccountScreen> {
           ),
           Column(children: [
             Information(
-              studentName: widget.studentName,
-              studentCode: widget.studentCode,
-              studentPhoneNum: widget.studentPhoneNum,
+              studentName: userProvider.studentName,
+              studentCode: userProvider.studentCode,
+              studentPhoneNum: userProvider.user_id.toString(),
             ),
             const AppTheme()
           ]),

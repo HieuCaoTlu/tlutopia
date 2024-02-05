@@ -7,7 +7,7 @@ class Cart {
   Schedule schedule = Schedule();
 
   bool isBookInCart(Book other) {
-    return items.any((book) => book.bookID == other.bookID);
+    return items.any((book) => book.id == other.id);
   }
 
   void addToCart(Book book) {

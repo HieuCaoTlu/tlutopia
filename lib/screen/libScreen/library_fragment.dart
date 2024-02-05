@@ -1,6 +1,9 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:tlutopia/object/Book.dart';
 import 'package:tlutopia/object/Cart.dart';
+import 'package:tlutopia/object/User.dart';
 import 'detail_book.dart';
 
 class LibraryFragment extends StatefulWidget {
@@ -12,56 +15,114 @@ class LibraryFragment extends StatefulWidget {
 }
 
 class _LibraryFragmentState extends State<LibraryFragment> {
-  final List<Book> collection1 = [
-    Book("A00",
-      "Random Book 1",
-      "Author 1",
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "2002",
-      'Category 1',
-      5,
-      'assets/images/bg.png',
-    ),
-    Book("A01",
-      "Random Book 2",
-      "Author 2",
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "2005",
-      'Category 2',
-      4,
-      'assets/images/bg4.png',
-    ),
-    Book("A02",
-      "Random Book 3",
-      "Author 3",
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "2008",
-      'Category 3',
-      3,
-      'assets/images/bg2.png',
-    ),
-    Book("A03",
-      "Random Book 4",
-      "Author 4",
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "2010",
-      'Category 4',
-      2,
-      'assets/images/bg3.png',
-    ),
-    Book("A04",
-      "Random Book 5",
-      "Author 5",
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-      "2013",
-      'Category 5',
-      1,
-      'assets/images/logo.png',
-    ),
-  ];
+  List<Book> data = [];
+  List<Book> dataRandom = [];
+  List<Book> dataNewest = [];
+
+  @override
+  void initState() {
+    super.initState();
+    data = [];
+    dataRandom = [];
+    dataNewest = [];
+    fetchData();
+    fetchDataRandom();
+    fetchDataNewest();
+  }
+
+  Future<void> fetchData() async {
+    // Gửi yêu cầu GET đến server
+    var url = Uri.parse('http://tlu-booklending.mooo.com/api/books');
+    var response = await http.get(url);
+
+    // Kiểm tra xem yêu cầu có thành công không (status code 200)
+    if (response.statusCode == 200) {
+      // Chuyển đổi dữ liệu JSON thành danh sách đối tượng
+      final List<dynamic> jsonData = json.decode(response.body);
+      for (var jsonBook in jsonData) {
+        Book book = Book(
+          jsonBook['id'],
+          jsonBook['title'],
+          jsonBook['author'],
+          jsonBook['major'],
+          jsonBook['description'],
+          jsonBook['publish_date'],
+          jsonBook['quantity'],
+          jsonBook['cover'],
+        );
+        setState(() {
+          data.add(book);
+        });
+      }
+    } else {
+      // Xử lý lỗi nếu có
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
+  Future<void> fetchDataRandom() async {
+    // Gửi yêu cầu GET đến server
+    var url = Uri.parse('http://tlu-booklending.mooo.com/api/books/random');
+    var response = await http.get(url);
+
+    // Kiểm tra xem yêu cầu có thành công không (status code 200)
+    if (response.statusCode == 200) {
+      // Chuyển đổi dữ liệu JSON thành danh sách đối tượng
+      final List<dynamic> jsonData = json.decode(response.body);
+      for (var jsonBook in jsonData) {
+        Book book = Book(
+          jsonBook['id'],
+          jsonBook['title'],
+          jsonBook['author'],
+          jsonBook['major'],
+          jsonBook['description'],
+          jsonBook['publish_date'],
+          jsonBook['quantity'],
+          jsonBook['cover'],
+        );
+        setState(() {
+          dataRandom.add(book);
+        });
+      }
+    } else {
+      // Xử lý lỗi nếu có
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
+
+  Future<void> fetchDataNewest() async {
+    // Gửi yêu cầu GET đến server
+    var url = Uri.parse('http://tlu-booklending.mooo.com/api/books/newest');
+    var response = await http.get(url);
+
+    // Kiểm tra xem yêu cầu có thành công không (status code 200)
+    if (response.statusCode == 200) {
+      // Chuyển đổi dữ liệu JSON thành danh sách đối tượng
+      final List<dynamic> jsonData = json.decode(response.body);
+      for (var jsonBook in jsonData) {
+        Book book = Book(
+          jsonBook['id'],
+          jsonBook['title'],
+          jsonBook['author'],
+          jsonBook['major'],
+          jsonBook['description'],
+          jsonBook['publish_date'],
+          jsonBook['quantity'],
+          jsonBook['cover'],
+        );
+        setState(() {
+          dataNewest.add(book);
+        });
+      }
+    } else {
+      // Xử lý lỗi nếu có
+      print('Request failed with status: ${response.statusCode}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = UserProvider.ofNonNull(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -72,7 +133,7 @@ class _LibraryFragmentState extends State<LibraryFragment> {
                 Stack(children: [
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 150,
+                    height: 120,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         fit: BoxFit.fill,
@@ -101,7 +162,7 @@ class _LibraryFragmentState extends State<LibraryFragment> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Hôm nay",
+                        "Hôm nay ",
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.w700),
                       ),
@@ -109,10 +170,10 @@ class _LibraryFragmentState extends State<LibraryFragment> {
                           style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w700,
-                              color: Color(0xff2C81FF)))
+                              color: Color(0xff2C81FF))),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -120,12 +181,11 @@ class _LibraryFragmentState extends State<LibraryFragment> {
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
                 if (index == 0) {
-                  return BookContent(
-                      widget.cart, collection1, "Được yêu thích");
+                  return BookContent(widget.cart, data, "Được yêu thích");
                 } else if (index == 1) {
-                  return BookContent(widget.cart, collection1, "Tiêu biểu");
+                  return BookContent(widget.cart, dataRandom, "Tiêu biểu: ");
                 } else {
-                  return BookContent(widget.cart, collection1, "Mới nhất");
+                  return BookContent(widget.cart, dataNewest, "Mới nhất");
                 }
               },
               childCount: 3,
@@ -206,7 +266,7 @@ class _BookContentState extends State<BookContent> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image(
-                      image: AssetImage(item.url),
+                      image: NetworkImage(item.cover),
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -220,7 +280,7 @@ class _BookContentState extends State<BookContent> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          item.bookName,
+                          item.title,
                           maxLines: 1,
                           softWrap: false,
                           style: const TextStyle(

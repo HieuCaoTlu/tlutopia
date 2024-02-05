@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tlutopia/object/Cart.dart';
-import 'package:tlutopia/object/Schedule.dart';
 import 'cart_fragment.dart';
 import 'library_fragment.dart';
 import 'search_fragment.dart';
 
 class LibraryScreen extends StatefulWidget {
-  const LibraryScreen({super.key});
+  LibraryScreen({super.key});
 
   @override
   State<LibraryScreen> createState() => _LibraryScreenState();
@@ -46,7 +45,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
               Icons.home_rounded,
               size: 30,
             ),
-            label: 'Thư viện',
+            label: 'Khám phá',
           ),
           BottomNavigationBarItem(
             icon: Icon(

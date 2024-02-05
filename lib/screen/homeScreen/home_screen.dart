@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tlutopia/object/User.dart';
 import 'package:tlutopia/screen/libScreen/lib_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String name;
-  const HomeScreen({required this.name, super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -12,8 +12,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final bool schedule = false;
 
-  String getMainName() {
-    List<String> names = widget.name.split(' ');
+  String getMainName(String name) {
+    List<String> names = name.split(' ');
     if (names.isNotEmpty) {
       return names.last;
     } else {
@@ -23,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final UserProvider userProvider = UserProvider.ofNonNull(context);
     return SingleChildScrollView(
       child: Container(
         color: Colors.white,
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Xin chào, ${getMainName()}!",
+                  "Xin chào, ${getMainName(userProvider.studentName)}!",
                   style: const TextStyle(
                       fontSize: 30, fontWeight: FontWeight.w700),
                 ),
@@ -71,22 +72,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 20,
                   color: Colors.transparent,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Feature('assets/images/ft1.png', 0),
-                    Feature('assets/images/ft2.png', 1)
+                    Feature('assets/images/ft1.png', 0, userProvider),
+                    Feature('assets/images/ft2.png', 1, userProvider)
                   ],
                 ),
                 Divider(
                   height: MediaQuery.of(context).size.height * 0.02,
                   color: Colors.transparent,
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Feature('assets/images/ft3.png', 2),
-                    Feature('assets/images/ft4.png', 3)
+                    Feature('assets/images/ft3.png', 2, userProvider),
+                    Feature('assets/images/ft4.png', 3, userProvider)
                   ],
                 ),
               ],
@@ -129,7 +130,8 @@ class RecentSchedule extends StatelessWidget {
 class Feature extends StatelessWidget {
   final String link;
   final int number;
-  const Feature(this.link, this.number, {super.key});
+  final UserProvider userProvider;
+  const Feature(this.link, this.number, this.userProvider, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +145,7 @@ class Feature extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const LibraryScreen(),
+                  builder: (context) => LibraryScreen(),
                 ),
               );
               break;

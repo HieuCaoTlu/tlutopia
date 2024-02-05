@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tlutopia/object/Calendar.dart';
 import 'package:tlutopia/object/Schedule.dart';
+import 'package:tlutopia/object/User.dart';
 import 'package:tlutopia/screen/scheduleScreen/sch_detail.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -16,6 +17,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   Widget build(BuildContext context) {
     BookingCalendarProvider provider =
         BookingCalendarProvider.ofNonNull(context);
+    UserProvider userProvider = UserProvider.ofNonNull(context);
+    provider.getAll(userProvider.user_id);
+    setState(() {
+      
+    });
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

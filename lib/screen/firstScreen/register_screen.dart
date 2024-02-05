@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tlutopia/screen/firstScreen/login_screen.dart';
 import 'package:tlutopia/screen/flow_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -126,41 +127,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     success = true;
-    var url = Uri.parse('http://192.168.1.10/aserver/register.php');
+    var url = Uri.parse('http://tlu-booklending.mooo.com/api/users');
     var data = {
-      'studentCode': studentCode.text,
-      'studentPass': studentPass.text,
-      'studentName': studentName.text,
-      'studentPhoneNum': studentPhoneNum.text,
-      'studentEmail': studentEmail.text,
+      'student_name': studentName.text,
+      'student_code': studentCode.text,
+      'phone': studentPhoneNum.text,
+      'email': studentEmail.text,
+      'password': studentPass.text,
     };
 
     try {
       var response = await http.post(url, body: data);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(response.body),
+          const SnackBar(
+            content: Text("Đăng nhập thành công!"),
           ),
         );
       } else {
         // ignore: use_build_context_synchronously
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-                'Failed to load data. Status code: ${response.statusCode}'),
-          ),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(
+        //     content: Text(
+        //         'Failed to load data. Status code: ${response.statusCode}'),
+        //   ),
+        // );
       }
     } catch (error) {
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: $error'),
-        ),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(
+      //     content: Text('Error: $error'),
+      //   ),
+      // );
     }
   }
 
@@ -169,7 +170,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => FlowScreen(studentName: studentName.text, studentCode: studentCode.text, studentPhoneNum: studentPhoneNum.text),
+          builder: (context) => LoginScreen(),
         ));
   }
 }

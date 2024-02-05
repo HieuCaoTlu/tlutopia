@@ -18,7 +18,7 @@ class _SearchFragmentState extends State<SearchFragment> {
       child: Column(children: [
         Container(
           width: MediaQuery.of(context).size.width,
-          height: 100,
+          height: 120,
           decoration: const BoxDecoration(
             image: DecorationImage(
               fit: BoxFit.fill,

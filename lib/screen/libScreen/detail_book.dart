@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tlutopia/object/Book.dart';
+import 'package:tlutopia/object/Calendar.dart';
 import 'package:tlutopia/object/Cart.dart';
+import 'package:tlutopia/object/User.dart';
 import 'package:tlutopia/screen/libScreen/cart_fragment.dart';
 
 class DetailBook extends StatefulWidget {
@@ -15,6 +17,9 @@ class DetailBook extends StatefulWidget {
 class _DetailBookState extends State<DetailBook> {
   @override
   Widget build(BuildContext context) {
+    BookingCalendarProvider provider =
+        BookingCalendarProvider.ofNonNull(context);
+    UserProvider userProvider = UserProvider.ofNonNull(context);
     return Scaffold(
         body: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,7 +56,7 @@ class _DetailBookState extends State<DetailBook> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image(
-                      image: AssetImage(widget.item.url),
+                      image: NetworkImage(widget.item.cover),
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -61,7 +66,7 @@ class _DetailBookState extends State<DetailBook> {
                   color: Colors.transparent,
                 ),
                 Text(
-                  widget.item.bookName,
+                  widget.item.title,
                   overflow: TextOverflow.clip,
                   style: const TextStyle(
                       fontSize: 25, fontWeight: FontWeight.w700),
@@ -148,11 +153,12 @@ class _DetailBookState extends State<DetailBook> {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      if (widget.cart.isBookInCart(widget.item)) {
+                      if (widget.cart.isBookInCart(widget.item) ||
+                          provider.isBookIdExist(widget.item)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(
-                                'Không được thêm: ${widget.item.bookName}'),
+                            content:
+                                Text('Không được thêm: ${widget.item.title}'),
                             duration: const Duration(
                                 seconds: 1), // Thời gian hiển thị Snackbar
                           ),
@@ -161,8 +167,8 @@ class _DetailBookState extends State<DetailBook> {
                         widget.cart.addToCart(widget.item);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(
-                                'Đã thêm vào giỏ: ${widget.item.bookName}'),
+                            content:
+                                Text('Đã thêm vào giỏ: ${widget.item.title}'),
                             duration: const Duration(
                                 seconds: 1), // Thời gian hiển thị Snackbar
                           ),
@@ -197,17 +203,19 @@ class _DetailBookState extends State<DetailBook> {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      if (widget.cart.isBookInCart(widget.item)) {
+                      if (provider.isBookIdExist(widget.item)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(
-                                'Không được thêm: ${widget.item.bookName}'),
+                            content:
+                                Text('Không được thêm: ${widget.item.title}'),
                             duration: const Duration(
                                 seconds: 1), // Thời gian hiển thị Snackbar
                           ),
                         );
                       } else if (widget.item.quantity > 0) {
-                        widget.cart.addToCart(widget.item);
+                        if (!widget.cart.isBookInCart(widget.item)) {
+                          widget.cart.addToCart(widget.item);
+                        }
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -267,7 +275,7 @@ class _DetailBookState extends State<DetailBook> {
               children: [
                 ListTile(
                   title: Text(
-                    'Năm xuất bản: ${information.publishYear}',
+                    'Năm xuất bản: ${information.publish_date}',
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w600),
                   ),

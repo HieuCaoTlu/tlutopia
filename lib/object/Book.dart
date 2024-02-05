@@ -1,13 +1,13 @@
 class Book {
-  String bookID = '';
-  String bookName = '';
-  String author = '';
-  String description = '';
-  String publishYear = '';
-  String major = '';
+  int id = 0; 
+  String title = ''; 
+  String author = ''; 
+  String description = ''; 
+  String publish_date = ''; 
+  String major = ''; 
   int quantity = 0;
-  String url = '';
+  String cover = ''; 
 
-  Book(this.bookID, this.bookName, this.author, this.description,
-      this.publishYear, this.major, this.quantity, this.url);
+  Book(this.id, this.title, this.author, this.major,
+      this.description, this.publish_date, this.quantity, this.cover);
 }

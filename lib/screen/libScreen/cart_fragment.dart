@@ -19,7 +19,7 @@ class CartFragment extends StatefulWidget {
 
 class _CartFragmentState extends State<CartFragment> {
   DateTime start = DateTime.now();
-  DateTime end = DateTime.now().add(const Duration(days: 7));
+  DateTime end = DateTime.now().add(const Duration(days: 14));
 
 
   @override
@@ -111,9 +111,9 @@ class _CartFragmentState extends State<CartFragment> {
                             SetTime(
                               select: start,
                               onDateChanged: (newDate) {
-                                setState(() {
-                                  start = newDate;
-                                });
+                                // setState(() {
+                                //   start = newDate;
+                                // });
                               },
                             )
                           ],
@@ -255,7 +255,7 @@ class _CartFragmentState extends State<CartFragment> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image(
-                        image: AssetImage(item.url),
+                        image: NetworkImage(item.cover),
                         fit: BoxFit.fill,
                       ),
                     ),
@@ -272,7 +272,7 @@ class _CartFragmentState extends State<CartFragment> {
                         children: [
                           Flexible(
                             child: Text(
-                              item.bookName,
+                              item.title,
                               maxLines: 3,
                               style: const TextStyle(
                                 color: Colors.black,
@@ -361,10 +361,10 @@ class _CartFragmentState extends State<CartFragment> {
 
     // Kiểm tra thời gian mượn có nằm trong khoảng từ 1 đến 10 ngày không
     int rentalDays = end.difference(start).inDays;
-    if (rentalDays < 1 || rentalDays > 9) {
+    if (rentalDays < 1 || rentalDays > 14) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Thời gian mượn chỉ giới hạn trong 10 ngày'),
+          content: Text('Thời gian mượn chỉ giới hạn trong 14 ngày'),
         ),
       );
       return;
@@ -376,12 +376,6 @@ class _CartFragmentState extends State<CartFragment> {
     cart.schedule = schedule;
 
     // Hiển thị thông báo thành công
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Tạo thành công lịch hẹn'),
-        duration: Duration(seconds: 1),
-      ),
-    );
 
     Cart cartCopy = cart.copy();
     Schedule newSch = cartCopy.schedule;

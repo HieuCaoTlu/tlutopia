@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:tlutopia/object/User.dart';
 import 'package:tlutopia/screen/flow_screen.dart';
 import 'package:http/http.dart' as http;
 import 'register_screen.dart';
@@ -23,14 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
     fetchData((success) {
       if (success) {
         Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => FlowScreen(
-                    studentName: studentName,
-                    studentCode: studentCode.text,
-                    studentPhoneNum: studentPhoneNum,
-                  )),
-        );
+            context, MaterialPageRoute(builder: (context) => FlowScreen()));
       }
     });
   }
@@ -217,6 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   fetchData(Function(bool) callback) async {
+    final UserProvider userProvider = UserProvider.ofNonNull(context);
     if (studentCode.text == 'admin' && studentPass.text == 'admin') {
       callback(true);
     }
@@ -230,10 +225,10 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    var url = Uri.parse('http://192.168.1.10/aserver/login.php');
+    var url = Uri.parse('http://tlu-booklending.mooo.com/api/login');
     var data = {
-      'studentCode': studentCode.text,
-      'studentPass': studentPass.text,
+      'student_code': studentCode.text,
+      'password': studentPass.text,
     };
 
     try {
@@ -241,16 +236,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
       final responseData = json.decode(response.body);
 
-      if (responseData['status'] == 'success') {
-        studentName = responseData['studentName'];
-        studentPhoneNum = responseData['studentPhoneNum'];
+      if (response.statusCode == 200) {
         callback(true);
-        // Đăng nhập thành công, xử lý logic ở đây
-        // ignore: use_build_context_synchronously
+        userProvider.user_id = responseData['id'];
+        userProvider.studentName = responseData['student_name'];
+        userProvider.studentCode = responseData['student_code'];
+        userProvider.studentPhoneNum = responseData['phone'];
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('${responseData['message']}'),
-            duration: const Duration(seconds: 2),
+          const SnackBar(
+            content: Text('Đăng nhập thành công!'),
+            duration: Duration(seconds: 2),
           ),
         );
       } else {
@@ -259,7 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${responseData['message']}'),
+            content: Text('Tài khoản không tồn tại hoặc sai thông tin'),
             duration: const Duration(seconds: 2),
           ),
         );

@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tlutopia/object/User.dart';
 import 'package:tlutopia/screen/accScreen/acc_screen.dart';
 import 'package:tlutopia/screen/homeScreen/home_screen.dart';
 import 'package:tlutopia/screen/notiScreen/noti_screen.dart';
 import 'package:tlutopia/screen/scheduleScreen/sch_screen.dart';
 
 class FlowScreen extends StatefulWidget {
-  final String studentName;
-  final String studentCode;
-  final String studentPhoneNum;
   const FlowScreen(
-      {required this.studentName,
-      required this.studentCode,
-      required this.studentPhoneNum,
-      Key? key})
+      {Key? key})
       : super(key: key);
 
   @override
@@ -22,15 +17,12 @@ class FlowScreen extends StatefulWidget {
 class _FlowScreenState extends State<FlowScreen> {
   int _selectedIndex = 0;
   List<Widget> get _widgetOptions => [
-        HomeScreen(name: widget.studentName),
+        const HomeScreen(),
         const ScheduleScreen(),
         const NotifyScreen(),
-        AccountScreen(
-            studentName: widget.studentName,
-            studentCode: widget.studentCode,
-            studentPhoneNum: widget.studentPhoneNum),
-      ];
+        const AccountScreen()
 
+      ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -38,12 +30,10 @@ class _FlowScreenState extends State<FlowScreen> {
     });
   }
 
-  String getStudentName() {
-    return widget.studentName;
-  }
 
   @override
   Widget build(BuildContext context) {
+    final userProvider = UserProvider.ofNonNull(context);
     return Scaffold(
       body: SafeArea(
         top: false,

@@ -3,9 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:tlutopia/object/Book.dart';
 import 'package:tlutopia/object/Calendar.dart';
 import 'package:tlutopia/object/Schedule.dart';
+import 'package:tlutopia/object/User.dart';
 
 class ScheduleDetail extends StatelessWidget {
-  final bool success;
+  bool success;
   bool addedToCalendar = false;
   Schedule schedule;
   ScheduleDetail(this.schedule, {this.success = false, super.key});
@@ -14,10 +15,20 @@ class ScheduleDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     BookingCalendarProvider bookingCalendarProvider =
         BookingCalendarProvider.ofNonNull(context);
-
+    final userProvider = UserProvider.of(context);
+    if (userProvider == null) {
+      // Xử lý khi không tìm thấy UserProvider
+      return const Scaffold(
+        body: Center(
+          child: Text("error user providing"),
+        ),
+      );
+    }
     if (success && !addedToCalendar) {
-      bookingCalendarProvider.addSchedule(schedule);
-      addedToCalendar = true; // Đánh dấu là đã thêm vào lịch
+      // bookingCalendarProvider.addSchedule(schedule);
+      schedule.fetchDataForEachBook(userProvider.user_id);
+      addedToCalendar = true;
+      bookingCalendarProvider.getAll(userProvider.user_id);
     }
     return Scaffold(
         body: SingleChildScrollView(
@@ -177,7 +188,18 @@ class ScheduleDetail extends StatelessWidget {
                         ),
                         FloatingActionButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            if (success) {
+                              success = false;
+                              int numberOfPops =
+                                  2; // Số lần pop bạn muốn thực hiện
+                              Navigator.of(context).popUntil((route) {
+                                // Kiểm tra số lần pop
+                                numberOfPops--;
+                                return numberOfPops < 0;
+                              });
+                            } else {
+                              Navigator.of(context).pop();
+                            }
                           },
                           shape: const CircleBorder(),
                           elevation: 0.0,
@@ -223,13 +245,13 @@ class _MemoDetailBookState extends State<MemoDetailBook> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.book.bookName,
+            widget.book.title,
             maxLines: 1,
             overflow: TextOverflow.fade,
             style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
           ),
           Text(
-            widget.book.bookName,
+            widget.book.author,
             maxLines: 2,
             overflow: TextOverflow.fade,
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
