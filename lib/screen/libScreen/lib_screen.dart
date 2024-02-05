@@ -14,7 +14,6 @@ class LibraryScreen extends StatefulWidget {
 
 class _LibraryScreenState extends State<LibraryScreen> {
   final Cart cart = Cart();
-  final BookingCalendar calendar = BookingCalendar();
   int _selectedIndex = 0;
   List<Widget> get _widgetOptions => [
         LibraryFragment(cart),

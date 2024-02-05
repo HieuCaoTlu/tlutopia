@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class SetTime extends StatefulWidget {
@@ -41,14 +40,14 @@ class _SetTimeState extends State<SetTime> {
             Text(
               DateFormat('EEEE', 'vi_VN').format(widget.select),
               style: const TextStyle(
-                  fontSize: 20, color: Colors.black, fontWeight: FontWeight.w600),
+                  fontSize: 17, color: Colors.black, fontWeight: FontWeight.w600),
             ),
             const SizedBox(
-              width: 15,
+              width: 5,
             ),
             const Text(
               "đổi",
-              style: TextStyle(fontSize: 15, color: Colors.black),
+              style: TextStyle(fontSize: 14, color: Colors.black),
             )
           ],
         ),

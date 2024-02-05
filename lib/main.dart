@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:tlutopia/screen/libScreen/lib_screen.dart';
+import 'package:tlutopia/object/Calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:tlutopia/object/Schedule.dart';
+import 'package:tlutopia/screen/firstScreen/login_screen.dart';
 
 void main() async {
   await initializeDateFormatting('vi_VN', null);
-  runApp(const MainApp());
+  List<Schedule> sharedList = [];
+  runApp(
+    BookingCalendarProvider(
+      list: sharedList,
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        debugShowMaterialGrid: false,
+        home: MainApp(),
+      ),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -14,8 +26,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'PlusJakartaSans'),
-      debugShowCheckedModeBanner: false,
-      home: const LibraryScreen(),
+      home: const LoginScreen(),
     );
   }
 }

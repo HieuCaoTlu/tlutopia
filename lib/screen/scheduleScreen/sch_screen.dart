@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tlutopia/object/Calendar.dart';
+import 'package:tlutopia/object/Schedule.dart';
+import 'package:tlutopia/screen/scheduleScreen/sch_detail.dart';
 
 class ScheduleScreen extends StatefulWidget {
   const ScheduleScreen({super.key});
@@ -8,13 +12,10 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  final List<String> entries = <String>[
-    'Lịch trình 1',
-    'Lịch trình 2',
-  ];
-  final List<String> colorCodes = <String>['demo', 'demo1'];
   @override
   Widget build(BuildContext context) {
+    BookingCalendarProvider provider =
+        BookingCalendarProvider.ofNonNull(context);
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -44,9 +45,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             shrinkWrap: true, // Ensures ListView takes only required space
             physics:
                 const NeverScrollableScrollPhysics(), // Disables scrolling within ListView
-            itemCount: entries.length,
+            itemCount: provider.list.length,
             itemBuilder: (context, index) {
-              return ScheduleCard(entries[index], colorCodes[index].toString());
+              return ScheduleCard(provider.list[index]);
             },
           ),
         ),
@@ -56,59 +57,72 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 }
 
 class ScheduleCard extends StatelessWidget {
-  final String title;
-  // final String detail;
-  final String source;
-  const ScheduleCard(this.title, this.source, {super.key});
+  final Schedule schedule;
+  const ScheduleCard(this.schedule, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xffECECEC),
-        borderRadius: BorderRadius.circular(25.0),
-      ),
-      margin: const EdgeInsets.fromLTRB(0, 15, 0, 5),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
+    return Material(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ScheduleDetail(schedule)));
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xffECECEC),
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          margin: const EdgeInsets.fromLTRB(0, 15, 0, 5),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w600),
-                    ),
-                    const Text(
-                      "Số lượng: 2",
-                      style:
-                          TextStyle(fontSize: 10, fontWeight: FontWeight.w600),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Mượn sách",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          'Số lượng: ${schedule.listBooking.length.toString()}',
+                          style: const TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.w400),
+                        ),
+                      ],
                     ),
                   ],
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    const Text(
+                      "Tới nhận sách vào",
+                      style:
+                          TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
+                    ),
+                    Text(
+                      DateFormat('EEEE - dd.MM', 'vi_VN')
+                          .format(schedule.startTime),
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                )
               ],
             ),
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                SizedBox(height: 50,),
-                Text(
-                  "Tới nhận sách vào",
-                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
-                ),
-                Text(
-                  "Thứ Năm - 21.12",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                ),
-              ],
-            )
-          ],
+          ),
         ),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:tlutopia/object/Schedule.dart';
 import 'package:tlutopia/object/picker.dart';
 import 'package:tlutopia/screen/libScreen/detail_book.dart';
 import 'package:intl/intl.dart';
+import 'package:tlutopia/screen/scheduleScreen/sch_detail.dart';
 
 class CartFragment extends StatefulWidget {
   final Cart cart;
@@ -17,9 +18,9 @@ class CartFragment extends StatefulWidget {
 }
 
 class _CartFragmentState extends State<CartFragment> {
-  final BookingCalendar calendar = BookingCalendar();
-  DateTime start = DateTime(2024);
-  DateTime end = DateTime(2024);
+  DateTime start = DateTime.now();
+  DateTime end = DateTime.now().add(const Duration(days: 7));
+
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +198,10 @@ class _CartFragmentState extends State<CartFragment> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  checkingCart(
+                                      context, start, end, widget.cart);
+                                },
                                 style: const ButtonStyle(
                                   backgroundColor: MaterialStatePropertyAll(
                                       Colors.transparent),
@@ -240,12 +244,12 @@ class _CartFragmentState extends State<CartFragment> {
                           item: item,
                         ))),
             child: Container(
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.topLeft,
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    color: Color.fromARGB(255, 243, 243, 243),
+                    color: const Color.fromARGB(255, 243, 243, 243),
                     height: MediaQuery.of(context).size.height * 0.18,
                     width: MediaQuery.of(context).size.width * 0.25,
                     child: ClipRRect(
@@ -257,6 +261,7 @@ class _CartFragmentState extends State<CartFragment> {
                     ),
                   ),
                   Container(
+                    alignment: Alignment.topLeft,
                     width: MediaQuery.of(context).size.width * 0.3,
                     margin: const EdgeInsets.only(right: 10),
                     child: Padding(
@@ -327,5 +332,61 @@ class _CartFragmentState extends State<CartFragment> {
       cart.items.remove(item);
       cart.size = cart.items.length;
     });
+  }
+
+  void checkingCart(
+      BuildContext context, DateTime start, DateTime end, Cart cart) {
+    // Kiểm tra end có lớn hơn start không
+    if (end.isBefore(start)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('End date must be greater than start date'),
+        ),
+      );
+      return;
+    }
+
+    // Kiểm tra start có nằm trong khoảng 1 tuần tính từ hôm nay không
+    DateTime currentDate = DateTime.now();
+    DateTime yesterday = currentDate.subtract(const Duration(days: 1));
+
+    if (start.isBefore(yesterday)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Ngày bắt đầu mượn chỉ tính từ hôm nay trở đi'),
+        ),
+      );
+      return;
+    }
+
+    // Kiểm tra thời gian mượn có nằm trong khoảng từ 1 đến 10 ngày không
+    int rentalDays = end.difference(start).inDays;
+    if (rentalDays < 1 || rentalDays > 9) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Thời gian mượn chỉ giới hạn trong 10 ngày'),
+        ),
+      );
+      return;
+    }
+
+    // Trả về một đối tượng Schedule nếu các điều kiện đều đúng
+    Schedule schedule = Schedule.withParameters(
+        startTime: start, endTime: end, status: '', listBooking: cart.items);
+    cart.schedule = schedule;
+
+    // Hiển thị thông báo thành công
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Tạo thành công lịch hẹn'),
+        duration: Duration(seconds: 1),
+      ),
+    );
+
+    Cart cartCopy = cart.copy();
+    Schedule newSch = cartCopy.schedule;
+    cart.resetCart();
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ScheduleDetail(newSch, success: true,)));
   }
 }

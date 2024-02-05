@@ -6,26 +6,19 @@ class Schedule {
   String status;
   List<Book> listBooking = [];
 
-  Schedule(this.startTime, this.endTime, this.status);
+  Schedule()
+      : startTime = DateTime.now(),
+        endTime = DateTime.now().add(const Duration(days: 1)),
+        status = '',
+        listBooking = List<Book>.empty();
+
+  Schedule.withParameters(
+      {required this.startTime,
+      required this.endTime,
+      required this.status,
+      required this.listBooking});
 
   void addToSchedule(Book book) {
     listBooking.add(book);
-  }
-}
-
-class BookingCalendar {
-  List<Schedule> list = [];
-  int size = 0;
-
-  bool isScheduleInCalendar(Schedule schedule) {
-    return list.contains(schedule);
-  }
-
-  void addToCalendar(Schedule schedule) {
-    if (!isScheduleInCalendar(schedule)) {
-      if (size > 5) return;
-      list.add(schedule);
-      size++;
-    }
   }
 }
