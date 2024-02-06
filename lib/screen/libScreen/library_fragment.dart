@@ -5,7 +5,6 @@ import 'package:tlutopia/object/Book.dart';
 import 'package:tlutopia/object/Cart.dart';
 import 'package:tlutopia/object/User.dart';
 import 'detail_book.dart';
-import 'dart:math';
 
 class LibraryFragment extends StatefulWidget {
   final Cart cart;

@@ -4,8 +4,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:tlutopia/object/Schedule.dart';
 import 'package:tlutopia/object/User.dart';
 import 'package:tlutopia/screen/firstScreen/login_screen.dart';
-import 'package:tlutopia/screen/firstScreen/register_screen.dart';
-import 'package:tlutopia/screen/test.dart';
 
 void main() async {
   await initializeDateFormatting('vi_VN', null);

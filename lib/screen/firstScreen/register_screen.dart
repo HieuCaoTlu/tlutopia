@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tlutopia/screen/firstScreen/login_screen.dart';
-import 'package:tlutopia/screen/flow_screen.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterScreen extends StatefulWidget {
