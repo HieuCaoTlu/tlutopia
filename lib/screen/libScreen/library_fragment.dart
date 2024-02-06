@@ -5,6 +5,7 @@ import 'package:tlutopia/object/Book.dart';
 import 'package:tlutopia/object/Cart.dart';
 import 'package:tlutopia/object/User.dart';
 import 'detail_book.dart';
+import 'dart:math';
 
 class LibraryFragment extends StatefulWidget {
   final Cart cart;
@@ -18,6 +19,7 @@ class _LibraryFragmentState extends State<LibraryFragment> {
   List<Book> data = [];
   List<Book> dataRandom = [];
   List<Book> dataNewest = [];
+  String? major;
 
   @override
   void initState() {
@@ -26,7 +28,6 @@ class _LibraryFragmentState extends State<LibraryFragment> {
     dataRandom = [];
     dataNewest = [];
     fetchData();
-    fetchDataRandom();
     fetchDataNewest();
   }
 
@@ -50,10 +51,14 @@ class _LibraryFragmentState extends State<LibraryFragment> {
           jsonBook['quantity'],
           jsonBook['cover'],
         );
+        print('http://tlu-booklending.mooo.com/api/books/${jsonBook['id']}');
+        if (jsonBook == jsonData.last) major = jsonBook['major'];
         setState(() {
           data.add(book);
+          major;
         });
       }
+      fetchDataRandom();
     } else {
       // Xử lý lỗi nếu có
       print('Request failed with status: ${response.statusCode}');
@@ -62,8 +67,10 @@ class _LibraryFragmentState extends State<LibraryFragment> {
 
   Future<void> fetchDataRandom() async {
     // Gửi yêu cầu GET đến server
-    var url = Uri.parse('http://tlu-booklending.mooo.com/api/books/random');
+    var url = Uri.parse(
+        'http://tlu-booklending.mooo.com/api/books/random?major=$major');
     var response = await http.get(url);
+    print(url);
 
     // Kiểm tra xem yêu cầu có thành công không (status code 200)
     if (response.statusCode == 200) {
@@ -183,7 +190,7 @@ class _LibraryFragmentState extends State<LibraryFragment> {
                 if (index == 0) {
                   return BookContent(widget.cart, data, "Được yêu thích");
                 } else if (index == 1) {
-                  return BookContent(widget.cart, dataRandom, "Tiêu biểu: ");
+                  return BookContent(widget.cart, dataRandom, "Khám phá: $major");
                 } else {
                   return BookContent(widget.cart, dataNewest, "Mới nhất");
                 }
