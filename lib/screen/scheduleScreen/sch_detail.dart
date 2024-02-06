@@ -28,6 +28,7 @@ class ScheduleDetail extends StatelessWidget {
       // bookingCalendarProvider.addSchedule(schedule);
       schedule.fetchDataForEachBook(userProvider.user_id);
       addedToCalendar = true;
+      bookingCalendarProvider.changed = true;
       bookingCalendarProvider.getAll(userProvider.user_id);
     }
     return Scaffold(

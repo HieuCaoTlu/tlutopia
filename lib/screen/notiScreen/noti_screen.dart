@@ -17,7 +17,7 @@ class _NotifyScreenState extends State<NotifyScreen> {
   void initState() {
     super.initState();
     data = [];
-    fetchData();
+    // fetchData();
   }
 
   List<NotificationInformation> convertMapToList(Map<String, dynamic> data) {
@@ -33,7 +33,7 @@ class _NotifyScreenState extends State<NotifyScreen> {
 
   Future<void> fetchData() async {
     // Gửi yêu cầu GET đến server
-    var url = Uri.parse('http://192.168.1.10/aserver/notify.php');
+    var url = Uri.parse('');
     var response = await http.get(url);
 
     // Kiểm tra xem yêu cầu có thành công không (status code 200)

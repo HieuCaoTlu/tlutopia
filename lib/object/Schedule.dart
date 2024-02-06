@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:intl/intl.dart';
 import 'package:tlutopia/object/Book.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,6 +30,7 @@ class Schedule {
   void fetchDataForEachBook(int user_id) {
     for (Book book in listBooking) {
       fetchData(book.id, user_id);
+      print(book.id);
     }
   }
 

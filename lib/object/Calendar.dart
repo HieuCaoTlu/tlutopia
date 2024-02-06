@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 class BookingCalendarProvider extends InheritedWidget {
   List<Schedule> list;
+  bool changed = true;
 
   bool isBookIdExist(Book other) {
     return list.any((schedule) => schedule.isBookIdExist(other));
@@ -40,6 +41,7 @@ class BookingCalendarProvider extends InheritedWidget {
   }
 
   Future<void> getAll(int userId) async {
+    if (!changed) return;
     var url =
         Uri.parse('http://tlu-booklending.mooo.com/api/loans?user_id=$userId');
 
@@ -49,12 +51,32 @@ class BookingCalendarProvider extends InheritedWidget {
       if (response.statusCode == 200) {
         List<dynamic> loanList = json.decode(response.body);
         List<Schedule> schedules = [];
+
         if (loanList.isEmpty) return;
+
+        Map<String, List<Map<String, dynamic>>> groupedLoans = {};
+
         for (var loan in loanList) {
-          DateTime startTime = DateTime.parse(loan['loan_date']);
-          DateTime endTime = DateTime.parse(loan['due_date']);
-          String status = loan['status'];
-          List<Book> listBooking = await getBooksByLoanId(loan['id']);
+          String loanDate = loan['loan_date'];
+          print(loan);
+          if (!groupedLoans.containsKey(loanDate)) {
+            groupedLoans[loanDate] = [];
+          }
+          groupedLoans[loanDate]!.add(loan);
+        }
+
+        groupedLoans.forEach((loanDate, loans) {
+          List<Book> listBooking = [];
+          String status = '';
+          DateTime startTime = DateTime.parse(loans[0]['loan_date']);
+          DateTime endTime = DateTime.parse(loans[0]['due_date']);
+
+          for (var loan in loans) {
+            Book book = Book(0, '', '', '', '', '', 0, '');
+            book.getBook(loan['book_id']);
+            listBooking.add(book);
+          }
+
           Schedule schedule = Schedule.withParameters(
             startTime: startTime,
             endTime: endTime,
@@ -62,38 +84,10 @@ class BookingCalendarProvider extends InheritedWidget {
             listBooking: listBooking,
           );
           schedules.add(schedule);
-        }
+        });
+
         list = schedules;
-      } else {
-        throw Exception('Failed to load data');
-      }
-    } catch (error) {
-      throw Exception('Error: $error');
-    }
-  }
-
-  Future<List<Book>> getBooksByLoanId(int loanId) async {
-    var url = Uri.parse('http://tlu-booklending.mooo.com/api/loans/$loanId');
-    try {
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        Map<String, dynamic> loanData = json.decode(response.body);
-
-        if (loanData.containsKey('book_id') && loanData['book_id'] is int) {
-          Book newBook = Book(
-            loanData['id'] ?? 0,
-            loanData['title'] ?? '',
-            loanData['author'] ?? '',
-            loanData['description'] ?? '',
-            loanData['publish_date'] ?? '',
-            loanData['major'] ?? '',
-            loanData['quantity'] ?? 0,
-            loanData['cover'] ?? '',
-          );
-          return [newBook];
-        } else {
-          throw Exception('Invalid or missing book data');
-        }
+        changed = false;
       } else {
         throw Exception('Failed to load data');
       }
