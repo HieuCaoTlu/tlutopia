@@ -275,7 +275,7 @@ class _DetailBookState extends State<DetailBook> {
               children: [
                 ListTile(
                   title: Text(
-                    'ID: ${information.id}',
+                    'Xuất bản: ${information.publish_date}',
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.w600),
                   ),

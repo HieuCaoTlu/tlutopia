@@ -306,7 +306,7 @@ class _CartFragmentState extends State<CartFragment> {
                                   backgroundColor: MaterialStatePropertyAll(
                                       Color(0xffECECEC))),
                               child: Text(
-                                "${item.id} Xóa",
+                                "Xóa",
                                 style: TextStyle(color: Colors.black),
                               ))
                         ],
