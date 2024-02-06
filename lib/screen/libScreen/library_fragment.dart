@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:tlutopia/object/Book.dart';
+import 'package:tlutopia/object/Calendar.dart';
 import 'package:tlutopia/object/Cart.dart';
 import 'package:tlutopia/object/User.dart';
 import 'detail_book.dart';
@@ -19,6 +20,7 @@ class _LibraryFragmentState extends State<LibraryFragment> {
   List<Book> dataRandom = [];
   List<Book> dataNewest = [];
   String? major;
+  bool isDataFetched = false;
 
   @override
   void initState() {
@@ -32,6 +34,8 @@ class _LibraryFragmentState extends State<LibraryFragment> {
 
   Future<void> fetchData() async {
     // Gửi yêu cầu GET đến server
+    if (isDataFetched) return;
+    isDataFetched = true;
     var url = Uri.parse('http://tlu-booklending.mooo.com/api/books');
     var response = await http.get(url);
 
@@ -52,10 +56,12 @@ class _LibraryFragmentState extends State<LibraryFragment> {
         );
         print('http://tlu-booklending.mooo.com/api/books/${jsonBook['id']}');
         if (jsonBook == jsonData.last) major = jsonBook['major'];
-        setState(() {
-          data.add(book);
-          major;
-        });
+        if (mounted) {
+          setState(() {
+            data.add(book);
+            major;
+          });
+        }
       }
       fetchDataRandom();
     } else {
@@ -86,9 +92,11 @@ class _LibraryFragmentState extends State<LibraryFragment> {
           jsonBook['quantity'],
           jsonBook['cover'],
         );
-        setState(() {
-          dataRandom.add(book);
-        });
+        if (mounted) {
+          setState(() {
+            dataRandom.add(book);
+          });
+        }
       }
     } else {
       // Xử lý lỗi nếu có
@@ -116,9 +124,11 @@ class _LibraryFragmentState extends State<LibraryFragment> {
           jsonBook['quantity'],
           jsonBook['cover'],
         );
-        setState(() {
-          dataNewest.add(book);
-        });
+        if (mounted) {
+          setState(() {
+            dataNewest.add(book);
+          });
+        }
       }
     } else {
       // Xử lý lỗi nếu có
@@ -128,7 +138,9 @@ class _LibraryFragmentState extends State<LibraryFragment> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = BookingCalendarProvider.ofNonNull(context);
     final userProvider = UserProvider.ofNonNull(context);
+    provider.getAll(userProvider.user_id);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -189,9 +201,10 @@ class _LibraryFragmentState extends State<LibraryFragment> {
                 if (index == 0) {
                   return BookContent(widget.cart, data, "Được yêu thích");
                 } else if (index == 1) {
-                  return BookContent(widget.cart, dataRandom, "Khám phá: $major");
-                } else {
                   return BookContent(widget.cart, dataNewest, "Mới nhất");
+                } else {
+                  return BookContent(
+                      widget.cart, dataRandom, "Khám phá: $major");
                 }
               },
               childCount: 3,

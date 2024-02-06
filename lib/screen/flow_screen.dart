@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tlutopia/object/Calendar.dart';
 import 'package:tlutopia/object/User.dart';
 import 'package:tlutopia/screen/accScreen/acc_screen.dart';
 import 'package:tlutopia/screen/homeScreen/home_screen.dart';
@@ -6,9 +7,7 @@ import 'package:tlutopia/screen/notiScreen/noti_screen.dart';
 import 'package:tlutopia/screen/scheduleScreen/sch_screen.dart';
 
 class FlowScreen extends StatefulWidget {
-  const FlowScreen(
-      {Key? key})
-      : super(key: key);
+  const FlowScreen({Key? key}) : super(key: key);
 
   @override
   State<FlowScreen> createState() => _FlowScreenState();
@@ -21,7 +20,6 @@ class _FlowScreenState extends State<FlowScreen> {
         const ScheduleScreen(),
         const NotifyScreen(),
         const AccountScreen()
-
       ];
 
   void _onItemTapped(int index) {
@@ -30,10 +28,8 @@ class _FlowScreenState extends State<FlowScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final userProvider = UserProvider.ofNonNull(context);
     return Scaffold(
       body: SafeArea(
         top: false,

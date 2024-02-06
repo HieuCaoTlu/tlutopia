@@ -192,7 +192,7 @@ class ScheduleDetail extends StatelessWidget {
                             if (success) {
                               success = false;
                               int numberOfPops =
-                                  2; // Số lần pop bạn muốn thực hiện
+                                  3; // Số lần pop bạn muốn thực hiện
                               Navigator.of(context).popUntil((route) {
                                 // Kiểm tra số lần pop
                                 numberOfPops--;

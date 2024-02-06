@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tlutopia/object/Calendar.dart';
+import 'package:tlutopia/object/Schedule.dart';
 import 'package:tlutopia/object/User.dart';
 import 'package:tlutopia/screen/libScreen/lib_screen.dart';
+import 'package:tlutopia/screen/scheduleScreen/sch_detail.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,73 +31,76 @@ class _HomeScreenState extends State<HomeScreen> {
     return SingleChildScrollView(
       child: Container(
         color: Colors.white,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: 150,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.fill,
-                alignment: Alignment.bottomLeft,
-                image: AssetImage('assets/images/bg1.png'),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: 150,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    alignment: Alignment.bottomLeft,
+                    image: AssetImage('assets/images/bg1.png'),
+                  ),
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Xin chào, ${getMainName(userProvider.studentName)}!",
-                  style: const TextStyle(
-                      fontSize: 30, fontWeight: FontWeight.w700),
-                ),
-                const Divider(
-                  height: 5,
-                  color: Colors.transparent,
-                ),
-                const Text(
-                  "Lịch hẹn gần đây",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                RecentSchedule(schedule),
-                const Text(
-                  "Tính năng",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const Divider(
-                  height: 20,
-                  color: Colors.transparent,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Padding(
+                padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Feature('assets/images/ft1.png', 0, userProvider),
-                    Feature('assets/images/ft2.png', 1, userProvider)
+                    Text(
+                      "Xin chào, ${getMainName(userProvider.studentName)}!",
+                      style: const TextStyle(
+                          fontSize: 30, fontWeight: FontWeight.w700),
+                    ),
+                    const Divider(
+                      height: 5,
+                      color: Colors.transparent,
+                    ),
+                    const Text(
+                      "Lịch hẹn gần đây",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    RecentSchedule(schedule),
+                    const Text(
+                      "Tính năng",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const Divider(
+                      height: 20,
+                      color: Colors.transparent,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Feature('assets/images/ft1.png', 0, userProvider),
+                        Feature('assets/images/ft2.png', 1, userProvider)
+                      ],
+                    ),
+                    Divider(
+                      height: MediaQuery.of(context).size.height * 0.02,
+                      color: Colors.transparent,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Feature('assets/images/ft3.png', 2, userProvider),
+                        Feature('assets/images/ft4.png', 3, userProvider)
+                      ],
+                    ),
                   ],
                 ),
-                Divider(
-                  height: MediaQuery.of(context).size.height * 0.02,
-                  color: Colors.transparent,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Feature('assets/images/ft3.png', 2, userProvider),
-                    Feature('assets/images/ft4.png', 3, userProvider)
-                  ],
-                ),
-              ],
-            ),
-          )
-        ]),
+              )
+            ]),
       ),
     );
   }
@@ -105,7 +112,29 @@ class RecentSchedule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (schedule) return const Placeholder();
+    final provider = BookingCalendarProvider.ofNonNull(context);
+    final userProvider = UserProvider.ofNonNull(context);
+    provider.getAll(userProvider.user_id);
+    if (provider.list.isNotEmpty) {
+      return CustomScrollView(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        slivers: <Widget>[
+          const SliverToBoxAdapter(
+              child: Padding(
+            padding: const EdgeInsets.only(top: 20),
+          )),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return MemoSchedule(provider.list[index]);
+              },
+              childCount: 1,
+            ),
+          ),
+        ],
+      );
+    }
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(30),
@@ -166,5 +195,67 @@ class Feature extends StatelessWidget {
           fit: BoxFit.fill,
           filterQuality: FilterQuality.high,
         ));
+  }
+}
+
+class MemoSchedule extends StatelessWidget {
+  final Schedule schedule;
+  const MemoSchedule(this.schedule, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ScheduleDetail(schedule)));
+        },
+        child: Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: const Color(0xffECECEC),
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Column(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Mượn sách",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const Text(
+                    "Tới nhận sách vào",
+                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
+                  ),
+                  Text(
+                    DateFormat('EEEE - dd.MM', 'vi_VN')
+                        .format(schedule.startTime),
+                    style: const TextStyle(
+                        fontSize: 15, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

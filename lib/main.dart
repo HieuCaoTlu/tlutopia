@@ -16,7 +16,7 @@ void main() async {
         studentCode: '',
         studentName: '',
         studentPhoneNum: '',
-        child: MaterialApp(
+        child: const MaterialApp(
           debugShowCheckedModeBanner: false,
           debugShowMaterialGrid: false,
           home: MainApp(),
@@ -33,7 +33,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(fontFamily: 'PlusJakartaSans'),
-      home: LoginScreen(),
+      home: const LoginScreen(),
     );
   }
 }

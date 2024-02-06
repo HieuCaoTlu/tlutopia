@@ -19,9 +19,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         BookingCalendarProvider.ofNonNull(context);
     UserProvider userProvider = UserProvider.ofNonNull(context);
     provider.getAll(userProvider.user_id);
-    setState(() {
+    // setState(() {
       
-    });
+    // });
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

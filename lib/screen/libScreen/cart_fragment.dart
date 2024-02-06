@@ -141,9 +141,9 @@ class _CartFragmentState extends State<CartFragment> {
                             SetTime(
                               select: end,
                               onDateChanged: (newDate) {
-                                setState(() {
-                                  end = newDate;
-                                });
+                                // setState(() {
+                                //   end = newDate;
+                                // });
                               },
                             )
                           ],
