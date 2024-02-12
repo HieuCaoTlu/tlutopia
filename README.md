@@ -3,6 +3,7 @@
 - Cách để chạy: Bắt buộc phải gõ "flutter pub get" ở terminal để khởi tạo
 - Trong code có 1 tài khoản toàn quyền tên admin, pass: admin, mọi người có thể dùng nó để đăng nhập
 
+[API đang bị lỗi, chúng tôi sẽ sớm khắc phục]
 🆕 Bản 0.5 có gì?:
 - Code server ở branch riêng server-thanh
 - Code client ở master, bao gồm các tính năng sau:
