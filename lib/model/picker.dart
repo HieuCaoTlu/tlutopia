@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,7 +17,7 @@ class _SetTimeState extends State<SetTime> {
   Future<void> _selectDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: widget.select ?? DateTime.now(),
+      initialDate: widget.select,
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );

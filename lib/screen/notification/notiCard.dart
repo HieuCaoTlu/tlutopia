@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tlutopia/screen/notiScreen/noti_screen.dart';
+import 'package:tlutopia/screen/notification/notiInfo.dart';
 
 class NotificationCard extends StatelessWidget {
   final NotificationInformation information;
@@ -18,40 +18,36 @@ class NotificationCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(20.0),
         ),
         margin: const EdgeInsets.fromLTRB(0, 15, 0, 5),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          child: Row(
-            children: [
-              Flexible(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      information.title,
-                      style: const TextStyle(
-                        fontFamily: "Roboto",
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      overflow: TextOverflow.clip,
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+        child: Row(
+          children: [
+            Flexible(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    information.title,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
                     ),
-                    Text(
-                      '${information.source} - ĐHTL',
-                      style: const TextStyle(
-                        fontFamily: "Roboto",
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      overflow: TextOverflow.clip,
+                    overflow: TextOverflow.clip,
+                  ),
+                  Text(
+                    '${information.source} - ĐHTL',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
                     ),
-                  ],
-                ),
+                    overflow: TextOverflow.clip,
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -75,8 +71,8 @@ class NotificationCard extends StatelessWidget {
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
               ),
             ),
             child: Column(

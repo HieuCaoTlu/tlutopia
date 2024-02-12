@@ -1,35 +1,25 @@
+// ignore_for_file: file_names, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tlutopia/object/Book.dart';
-import 'package:tlutopia/object/Calendar.dart';
-import 'package:tlutopia/object/Schedule.dart';
-import 'package:tlutopia/object/User.dart';
+import 'package:tlutopia/model/book.dart';
+import 'package:tlutopia/model/loan.dart';
+import 'package:tlutopia/model/schedule.dart';
+import 'package:tlutopia/model/user.dart';
 
-class ScheduleDetail extends StatelessWidget {
+class LoanDetail extends StatelessWidget {
   bool success;
-  bool addedToCalendar = false;
-  Schedule schedule;
-  ScheduleDetail(this.schedule, {this.success = false, super.key});
+  bool addedToSchedule = false;
+  Loan loan;
+  LoanDetail(this.loan, {this.success = false, super.key});
 
   @override
   Widget build(BuildContext context) {
-    BookingCalendarProvider bookingCalendarProvider =
-        BookingCalendarProvider.ofNonNull(context);
-    final userProvider = UserProvider.of(context);
-    if (userProvider == null) {
-      // Xử lý khi không tìm thấy UserProvider
-      return const Scaffold(
-        body: Center(
-          child: Text("error user providing"),
-        ),
-      );
-    }
-    if (success && !addedToCalendar) {
-      // bookingCalendarProvider.addSchedule(schedule);
-      schedule.fetchDataForEachBook(userProvider.user_id);
-      addedToCalendar = true;
-      bookingCalendarProvider.changed = true;
-      bookingCalendarProvider.getAll(userProvider.user_id);
+    Schedule schedule = Schedule.ofNonNull(context);
+    User user = User.ofNonNull(context);
+    if (success && !addedToSchedule) {
+      loan.createLoan(user.user_id);
+      addedToSchedule = true;
+      schedule.update(user.user_id);
     }
     return Scaffold(
         body: SingleChildScrollView(
@@ -37,17 +27,41 @@ class ScheduleDetail extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: 150,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  alignment: Alignment.bottomLeft,
-                  filterQuality: FilterQuality.high,
-                  image: AssetImage('assets/images/bg3.png'),
+            Stack(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 150,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      alignment: Alignment.bottomLeft,
+                      filterQuality: FilterQuality.high,
+                      image: AssetImage('assets/images/bg3.png'),
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  top: MediaQuery.of(context).size.height * 0.095,
+                  left: MediaQuery.of(context).size.width * 0.08,
+                  child: FloatingActionButton(
+                    heroTag: 'nothing',
+                    onPressed: () {
+                      if (success) {
+                        success = false;
+                        Navigator.of(context)
+                            .popUntil(ModalRoute.withName("/library"));
+                      } else {
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    shape: const CircleBorder(),
+                    elevation: 0.0,
+                    backgroundColor: Colors.grey.shade200, // Màu xám nhẹ
+                    child: const Icon(Icons.arrow_back, color: Colors.black),
+                  ),
+                ),
+              ],
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(40, 0, 40, 0),
@@ -65,7 +79,7 @@ class ScheduleDetail extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         color: const Color(0xff5FA0FF)),
                     child: Text(
-                      "Số lượng: ${schedule.listBooking.length}",
+                      "Số lượng: ${loan.list.length}",
                       style: const TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w600),
                     ),
@@ -76,11 +90,12 @@ class ScheduleDetail extends StatelessWidget {
             Column(
               children: [
                 ListView.builder(
+                  padding: const EdgeInsets.all(0),
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: schedule.listBooking.length,
+                  itemCount: loan.list.length,
                   itemBuilder: (context, index) {
-                    return MemoDetailBook(schedule.listBooking[index]);
+                    return MemoDetailBook(loan.list[index]);
                   },
                 ),
                 const Divider(
@@ -101,7 +116,7 @@ class ScheduleDetail extends StatelessWidget {
                                 fontSize: 20, fontWeight: FontWeight.w600),
                           ),
                           Text(DateFormat('d MMM', 'vi_VN')
-                              .format(schedule.startTime)),
+                              .format(loan.loan_date)),
                         ],
                       ),
                       Container(
@@ -110,8 +125,7 @@ class ScheduleDetail extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                             color: const Color(0xff5FA0FF)),
                         child: Text(
-                          DateFormat('EEEE', 'vi_VN')
-                              .format(schedule.startTime),
+                          DateFormat('EEEE', 'vi_VN').format(loan.due_date),
                           style: const TextStyle(
                               fontSize: 20,
                               color: Colors.white,
@@ -135,7 +149,7 @@ class ScheduleDetail extends StatelessWidget {
                                 fontSize: 20, fontWeight: FontWeight.w600),
                           ),
                           Text(
-                              'Thời hạn: ${differFromDate(schedule.startTime, schedule.endTime)}'),
+                              'Thời hạn: ${differFromDate(loan.loan_date, loan.due_date)}'),
                         ],
                       ),
                       Container(
@@ -144,7 +158,7 @@ class ScheduleDetail extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                             color: const Color(0xffECECEC)),
                         child: Text(
-                          DateFormat('d/M', 'vi_VN').format(schedule.endTime),
+                          DateFormat('d/M', 'vi_VN').format(loan.due_date),
                           style: const TextStyle(
                               fontSize: 20,
                               color: Colors.black,
@@ -174,39 +188,18 @@ class ScheduleDetail extends StatelessWidget {
                 ),
                 Container(
                   margin: const EdgeInsets.fromLTRB(60, 40, 60, 0),
-                  child: Center(
+                  child: const Center(
                     child: Column(
                       children: [
-                        const Text(
+                        Text(
                           "Nếu bạn không trả sách đúng hẹn, MSV sẽ bị đánh dấu “cảnh báo” và bị xử lí theo đúng quy định của nhà trường.",
                           textAlign: TextAlign.center,
                           style:
                               TextStyle(fontSize: 13, color: Color(0xff979797)),
                         ),
-                        const Divider(
+                        Divider(
                           height: 20,
                           color: Colors.transparent,
-                        ),
-                        FloatingActionButton(
-                          onPressed: () {
-                            if (success) {
-                              success = false;
-                              int numberOfPops =
-                                  3; // Số lần pop bạn muốn thực hiện
-                              Navigator.of(context).popUntil((route) {
-                                // Kiểm tra số lần pop
-                                numberOfPops--;
-                                return numberOfPops < 0;
-                              });
-                            } else {
-                              Navigator.of(context).pop();
-                            }
-                          },
-                          shape: const CircleBorder(),
-                          elevation: 0.0,
-                          backgroundColor: Colors.grey.shade200, // Màu xám nhẹ
-                          child:
-                              const Icon(Icons.arrow_back, color: Colors.black),
                         ),
                       ],
                     ),

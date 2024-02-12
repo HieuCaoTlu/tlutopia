@@ -1,17 +1,15 @@
+// ignore_for_file: file_names
 import 'package:flutter/material.dart';
-import 'package:tlutopia/object/Book.dart';
-import 'package:tlutopia/object/Cart.dart';
-import 'package:tlutopia/object/Schedule.dart';
-import 'package:tlutopia/object/picker.dart';
-import 'package:tlutopia/screen/libScreen/detail_book.dart';
 import 'package:intl/intl.dart';
-import 'package:tlutopia/screen/scheduleScreen/sch_detail.dart';
+import 'package:tlutopia/model/book.dart';
+import 'package:tlutopia/model/cart.dart';
+import 'package:tlutopia/model/loan.dart';
+import 'package:tlutopia/model/picker.dart';
+import 'package:tlutopia/screen/library/bookDetail.dart';
+import 'package:tlutopia/screen/schedule/loanDetail.dart';
 
 class CartFragment extends StatefulWidget {
-  final Cart cart;
-  final bool newPage;
-
-  const CartFragment(this.newPage, this.cart, {Key? key}) : super(key: key);
+  const CartFragment({Key? key}) : super(key: key);
 
   @override
   State<CartFragment> createState() => _CartFragmentState();
@@ -21,9 +19,9 @@ class _CartFragmentState extends State<CartFragment> {
   DateTime start = DateTime.now();
   DateTime end = DateTime.now().add(const Duration(days: 14));
 
-
   @override
   Widget build(BuildContext context) {
+    Cart cart = Cart.ofNonNull(context);
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.07,
@@ -32,16 +30,16 @@ class _CartFragmentState extends State<CartFragment> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (widget.newPage)
-              FloatingActionButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                shape: const CircleBorder(),
-                elevation: 0.0,
-                backgroundColor: Colors.grey.shade200, // Màu xám nhẹ
-                child: const Icon(Icons.arrow_back, color: Colors.black),
-              ),
+            FloatingActionButton(
+              heroTag: 'no',
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              shape: const CircleBorder(),
+              elevation: 0.0,
+              backgroundColor: Colors.grey.shade200, // Màu xám nhẹ
+              child: const Icon(Icons.arrow_back, color: Colors.black),
+            ),
             const Divider(
               height: 15,
               color: Colors.transparent,
@@ -56,11 +54,11 @@ class _CartFragmentState extends State<CartFragment> {
                 Container(
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Color(0xff5FA0FF)),
+                      color: const Color(0xff5FA0FF)),
                   padding: const EdgeInsets.all(10),
                   margin: const EdgeInsets.only(right: 40),
                   child: Text(
-                    "Số lượng: ${widget.cart.size}",
+                    "Số lượng: ${cart.list.length}",
                     style: const TextStyle(
                         fontSize: 15,
                         color: Colors.white,
@@ -70,7 +68,7 @@ class _CartFragmentState extends State<CartFragment> {
               ],
             ),
             Visibility(
-              visible: widget.cart.size > 0,
+              visible: cart.list.isNotEmpty,
               child: Column(
                 children: [
                   Container(
@@ -78,12 +76,12 @@ class _CartFragmentState extends State<CartFragment> {
                     height: 170,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
-                      itemCount: widget.cart.size,
+                      itemCount: cart.list.length,
                       separatorBuilder: (context, _) => const SizedBox(
                         width: 20,
                       ),
-                      itemBuilder: (context, index) => appearList(widget.cart,
-                          widget.cart.items.reversed.toList()[index]),
+                      itemBuilder: (context, index) =>
+                          appearList(cart, cart.list.reversed.toList()[index]),
                     ),
                   ),
                   Container(
@@ -199,8 +197,7 @@ class _CartFragmentState extends State<CartFragment> {
                               ),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  checkingCart(
-                                      context, start, end, widget.cart);
+                                  checkingCart(context, start, end, cart);
                                 },
                                 style: const ButtonStyle(
                                   backgroundColor: MaterialStatePropertyAll(
@@ -240,7 +237,6 @@ class _CartFragmentState extends State<CartFragment> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => DetailBook(
-                          cart: widget.cart,
                           item: item,
                         ))),
             child: Container(
@@ -305,7 +301,7 @@ class _CartFragmentState extends State<CartFragment> {
                                       Colors.transparent),
                                   backgroundColor: MaterialStatePropertyAll(
                                       Color(0xffECECEC))),
-                              child: Text(
+                              child: const Text(
                                 "Xóa",
                                 style: TextStyle(color: Colors.black),
                               ))
@@ -320,17 +316,9 @@ class _CartFragmentState extends State<CartFragment> {
         ),
       );
 
-  void clearCart() {
-    setState(() {
-      widget.cart.items.clear();
-      widget.cart.size = 0;
-    });
-  }
-
   void deleteItem(Cart cart, Book item) {
     setState(() {
-      cart.items.remove(item);
-      cart.size = cart.items.length;
+      cart.list.remove(item);
     });
   }
 
@@ -370,17 +358,24 @@ class _CartFragmentState extends State<CartFragment> {
       return;
     }
 
-    // Trả về một đối tượng Schedule nếu các điều kiện đều đúng
-    Schedule schedule = Schedule.withParameters(
-        startTime: start, endTime: end, status: '', listBooking: cart.items);
-    cart.schedule = schedule;
+    // Trả về một đối tượng nếu các điều kiện đều đúng
+    Loan loan = Loan();
+    loan.list.addAll(cart.list);
+    loan.loan_date = start;
+    loan.duration = 14;
+    loan.due_date = loan.loan_date.add(Duration(days: loan.duration));
+    loan.status = 'Bình thường';
 
     // Hiển thị thông báo thành công
-
-    Cart cartCopy = cart.copy();
-    Schedule newSch = cartCopy.schedule;
-    cart.resetCart();
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ScheduleDetail(newSch, success: true,)));
+    setState(() {
+      cart.confirmCart();
+      cart.resetLoan();
+    });
+    Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (context) => LoanDetail(
+                  loan,
+                  success: true,
+                )));
   }
 }

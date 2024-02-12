@@ -1,29 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
-import 'package:tlutopia/object/Calendar.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:tlutopia/object/Schedule.dart';
-import 'package:tlutopia/object/User.dart';
-import 'package:tlutopia/screen/firstScreen/login_screen.dart';
+import 'package:tlutopia/model/cart.dart';
+import 'package:tlutopia/model/schedule.dart';
+import 'package:tlutopia/model/user.dart';
+import 'screen/login/login.dart';
 
 void main() async {
   await initializeDateFormatting('vi_VN', null);
-  List<Schedule> sharedList = [];
-  runApp(
-    BookingCalendarProvider(
-      list: sharedList,
-      child: UserProvider(
-        user_id: 0,
-        studentCode: '',
-        studentName: '',
-        studentPhoneNum: '',
-        child: const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          debugShowMaterialGrid: false,
-          home: MainApp(),
-        ),
-      ),
-    ),
-  );
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {
@@ -31,9 +16,18 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(fontFamily: 'PlusJakartaSans'),
-      home: const LoginScreen(),
+    return User(
+      child: Schedule(
+        child: Cart(
+          child: MaterialApp(
+            theme: ThemeData(fontFamily: 'PlusJakartaSans'),
+            debugShowCheckedModeBanner: false,
+            home: const Scaffold(
+              body: LoginScreen(),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

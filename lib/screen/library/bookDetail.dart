@@ -1,14 +1,12 @@
+// ignore_for_file: file_names
 import 'package:flutter/material.dart';
-import 'package:tlutopia/object/Book.dart';
-import 'package:tlutopia/object/Calendar.dart';
-import 'package:tlutopia/object/Cart.dart';
-import 'package:tlutopia/object/User.dart';
-import 'package:tlutopia/screen/libScreen/cart_fragment.dart';
+import 'package:tlutopia/model/book.dart';
+import 'package:tlutopia/model/cart.dart';
+import 'package:tlutopia/screen/library/cartFragment.dart';
 
 class DetailBook extends StatefulWidget {
   final Book item;
-  final Cart cart;
-  const DetailBook({required this.cart, required this.item, super.key});
+  const DetailBook({required this.item, super.key});
 
   @override
   State<DetailBook> createState() => _DetailBookState();
@@ -17,9 +15,7 @@ class DetailBook extends StatefulWidget {
 class _DetailBookState extends State<DetailBook> {
   @override
   Widget build(BuildContext context) {
-    BookingCalendarProvider provider =
-        BookingCalendarProvider.ofNonNull(context);
-    UserProvider userProvider = UserProvider.ofNonNull(context);
+    Cart cart = Cart.ofNonNull(context);
     return Scaffold(
         body: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +34,7 @@ class _DetailBookState extends State<DetailBook> {
               },
               shape: const CircleBorder(),
               elevation: 0.0,
-              backgroundColor: Colors.grey.shade200, // Màu xám nhẹ
+              backgroundColor: Colors.grey.shade200,
               child: const Icon(Icons.arrow_back, color: Colors.black),
             ),
           ),
@@ -53,11 +49,14 @@ class _DetailBookState extends State<DetailBook> {
                   color: const Color.fromARGB(27, 124, 124, 124),
                   height: MediaQuery.of(context).size.height * 0.3,
                   width: MediaQuery.of(context).size.width * 0.4,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image(
-                      image: NetworkImage(widget.item.cover),
-                      fit: BoxFit.fill,
+                  child: Hero(
+                    tag: 'book_${widget.item.book_id}',
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image(
+                        image: NetworkImage(widget.item.cover),
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
                 ),
@@ -104,8 +103,7 @@ class _DetailBookState extends State<DetailBook> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    showDescription(widget.item,
-                        context); // Hiển thị Snackbar khi nhấn vào mô tả
+                    showDescription(widget.item, context);
                   },
                   style: const ButtonStyle(
                     shadowColor: MaterialStatePropertyAll(Colors.transparent),
@@ -118,7 +116,7 @@ class _DetailBookState extends State<DetailBook> {
                   child: Text(
                     widget.item.description,
                     maxLines: 4,
-                    textAlign: TextAlign.justify, // Đổi text nút nếu cần thiết
+                    textAlign: TextAlign.justify,
                     style: const TextStyle(
                       color: Color.fromARGB(255, 141, 141, 141),
                       fontSize: 17,
@@ -153,29 +151,25 @@ class _DetailBookState extends State<DetailBook> {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      if (widget.cart.isBookInCart(widget.item) ||
-                          provider.isBookIdExist(widget.item)) {
+                      print(cart.isContain(widget.item));
+                      if (cart.isContain(widget.item)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content:
                                 Text('Không được thêm: ${widget.item.title}'),
-                            duration: const Duration(
-                                seconds: 1), // Thời gian hiển thị Snackbar
+                            duration: const Duration(milliseconds: 500),
                           ),
                         );
                       } else if (widget.item.quantity > 0) {
-                        widget.cart.addToCart(widget.item);
+                        cart.add(widget.item);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content:
                                 Text('Đã thêm vào giỏ: ${widget.item.title}'),
-                            duration: const Duration(
-                                seconds: 1), // Thời gian hiển thị Snackbar
+                            duration: const Duration(milliseconds: 500),
                           ),
                         );
-                      } else {
-                        // _showSnackbar('Hết hàng');
-                      }
+                      } else {}
                     },
                     style: const ButtonStyle(
                       backgroundColor:
@@ -186,7 +180,7 @@ class _DetailBookState extends State<DetailBook> {
                       'Thêm vào giỏ sách',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 15,
+                        fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -203,29 +197,22 @@ class _DetailBookState extends State<DetailBook> {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      if (provider.isBookIdExist(widget.item)) {
+                      if (cart.isContainProhibited(widget.item)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content:
                                 Text('Không được thêm: ${widget.item.title}'),
-                            duration: const Duration(
-                                seconds: 1), // Thời gian hiển thị Snackbar
+                            duration: const Duration(milliseconds: 500),
                           ),
                         );
                       } else if (widget.item.quantity > 0) {
-                        if (!widget.cart.isBookInCart(widget.item)) {
-                          widget.cart.addToCart(widget.item);
+                        if (!cart.list.contains(widget.item)) {
+                          cart.add(widget.item);
                         }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CartFragment(true, widget.cart)),
-                        );
-                      } else {
-                        // _showSnackbar('Hết hàng');
-                      }
-                      widget.cart.addToCart(widget.item);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const CartFragment()));
+                      } else {}
+                      cart.add(widget.item);
                     },
                     style: const ButtonStyle(
                       backgroundColor:
@@ -236,7 +223,7 @@ class _DetailBookState extends State<DetailBook> {
                       'Đặt ngay',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 15,
+                        fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
