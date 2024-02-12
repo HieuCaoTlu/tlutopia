@@ -99,8 +99,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try {
       var response = await http.post(url, body: data);
       if (response.statusCode == 200) {
-        final info = json.decode(response.body);
-        user.user_id == int.parse(info['user_id']);
+        final Map<String, dynamic> info = json.decode(response.body);
+        user.user_id = int.parse(info['user_id']);
         user.student_code = info['student_code'];
         user.student_name = info['student_name'];
         user.phone = info['phone'];

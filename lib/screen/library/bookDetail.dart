@@ -151,7 +151,6 @@ class _DetailBookState extends State<DetailBook> {
                   ),
                   child: ElevatedButton(
                     onPressed: () {
-                      print(cart.isContain(widget.item));
                       if (cart.isContain(widget.item)) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

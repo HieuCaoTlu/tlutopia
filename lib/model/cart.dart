@@ -14,7 +14,6 @@ class Cart extends InheritedWidget {
 
   void add(Book book) {
     if (isContain(book)) return;
-    print("add complete");
     list.add(book);
   }
 

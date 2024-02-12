@@ -58,6 +58,5 @@ class Loan {
     for (var book in list) {
       book.getBook();
     }
-    print("Successfully");
   }
 }

@@ -7,13 +7,13 @@ class SetTime extends StatefulWidget {
   DateTime select;
   final Function(DateTime) onDateChanged;
 
-  SetTime({required this.select, required this.onDateChanged});
+  SetTime({super.key, required this.select, required this.onDateChanged});
 
   @override
-  _SetTimeState createState() => _SetTimeState();
+  SetTimeState createState() => SetTimeState();
 }
 
-class _SetTimeState extends State<SetTime> {
+class SetTimeState extends State<SetTime> {
   Future<void> _selectDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
       context: context,
