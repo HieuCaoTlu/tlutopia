@@ -1,10 +1,10 @@
 # TLUtopia 🎏🪅
-[12/2/24]📱 **TLUtopia Version 0.6 Unreleased (Local Only)**:
+## [12/2/24]📱 **TLUtopia Version 0.6 Unreleased (Local Only)**:
 - Cách để chạy: Bắt buộc phải gõ "flutter pub get" ở terminal để khởi tạo
 - Trong code có 1 tài khoản toàn quyền tên admin, pass: admin, mọi người có thể dùng nó để đăng nhập
 - Hiện tại chúng tôi chưa tìm được host API, nên ứng dụng sẽ chưa thể sử dụng online.
 
-🆕🎏 **Bản 0.6 có gì?**:
+## 🆕🎏 **Bản 0.6 có gì?**:
 - 😓 **Lưu ý, phiên bản này chưa thể chạy API online mà chỉ có thể sử dụng với server localhost**.
 - 🥳 **Thông tin về phiên bản 0.6**:
   + Tinh chỉnh toàn diện và tối ưu giao diện ứng dụng.
