@@ -26,7 +26,6 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    print("hello");
   }
 
   @override
@@ -183,7 +182,6 @@ class _RecentScheduleState extends State<RecentSchedule> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-      print("Hello2");
     });
     final Schedule schedule = Schedule.ofNonNull(context);
     if (schedule.list.isNotEmpty) {
@@ -238,7 +236,6 @@ class _MemoLoanState extends State<MemoLoan> {
   @override
   Widget build(BuildContext context) {
     setState(() {
-      print("Hello3");
     });
     return Material(
       child: GestureDetector(

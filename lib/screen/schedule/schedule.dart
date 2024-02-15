@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tlutopia/model/loan.dart';
 import 'package:tlutopia/model/schedule.dart';
-import 'package:tlutopia/model/user.dart';
 import 'package:tlutopia/screen/schedule/loanDetail.dart';
 
 class ScheduleScreen extends StatefulWidget {
