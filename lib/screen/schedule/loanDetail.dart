@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tlutopia/model/book.dart';
 import 'package:tlutopia/model/loan.dart';
-import 'package:tlutopia/model/schedule.dart';
-import 'package:tlutopia/model/user.dart';
 
 class LoanDetail extends StatelessWidget {
   bool success;
@@ -14,13 +12,6 @@ class LoanDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Schedule schedule = Schedule.ofNonNull(context);
-    User user = User.ofNonNull(context);
-    if (success && !addedToSchedule) {
-      loan.createLoan(user.user_id);
-      addedToSchedule = true;
-      schedule.update(user.user_id);
-    }
     return Scaffold(
         body: SingleChildScrollView(
       child: Column(

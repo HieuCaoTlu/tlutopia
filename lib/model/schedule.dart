@@ -37,8 +37,8 @@ class Schedule extends InheritedWidget {
   }
 
   Future<void> update(int user_id) async {
-    final url =
-        Uri.parse('http://192.168.1.8/aserver/loan.php?user_id=$user_id');
+    final url = Uri.parse(
+        'http://tlu-booklending.cloudns.be/api/loans/?user_id=$user_id');
 
     try {
       final response = await http.get(url);
@@ -47,8 +47,7 @@ class Schedule extends InheritedWidget {
         List<Loan> temp = [];
         for (var data in jsonData) {
           final loan = Loan();
-          Book book =
-              Book(int.parse(data['book_id']), '', '', '', '', '', 0, '');
+          Book book = Book(data['book_id'], '', '', '', '', '', 0, '');
           await book.getBook();
           loan.list.add(book);
           loan.loan_date = DateTime.parse(data['loan_date']);

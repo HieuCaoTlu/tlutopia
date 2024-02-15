@@ -22,6 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController phone = TextEditingController();
   TextEditingController email = TextEditingController();
   bool success = false;
+  bool isLoading = false;
 
   void login() async {
     if (success) {
@@ -31,9 +32,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
           duration: Duration(milliseconds: 500),
         ),
       );
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const FlowScreen()));
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                settings: const RouteSettings(name: "/flow"),
+                builder: (context) => const FlowScreen()));
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -46,7 +50,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> register() async {
+    setState(() {
+      isLoading = true;
+    });
     await fetchData();
+    setState(() {
+      isLoading = false;
+    });
     login();
   }
 
@@ -87,7 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    var url = Uri.parse('http://192.168.1.8/aserver/register.php');
+    var url = Uri.parse('http://tlu-booklending.cloudns.be/api/users');
     var data = {
       'student_name': name.text,
       'student_code': code.text,
@@ -98,9 +108,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     try {
       var response = await http.post(url, body: data);
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> info = json.decode(response.body);
-        user.user_id = int.parse(info['user_id']);
+      final Map<String, dynamic> info = json.decode(response.body);
+      if (info['id'] != null) {
+        user.user_id = info['id'];
         user.student_code = info['student_code'];
         user.student_name = info['student_name'];
         user.phone = info['phone'];
@@ -188,21 +198,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       margin: const EdgeInsets.all(30),
                       child: Column(children: [
                         InputField(
-                            controller: code, placeholder: "Mã sinh viên"),
+                          controller: code,
+                          placeholder: "Mã sinh viên",
+                        ),
                         InputField(
-                            controller: name, placeholder: "Tên sinh viên"),
+                          controller: name,
+                          placeholder: "Tên sinh viên",
+                        ),
                         InputField(
                           controller: pass,
                           placeholder: "Mật khẩu (tối thiểu 5 kí tự):",
                           hide: true,
                         ),
                         InputField(
-                            controller: repass,
-                            placeholder: "Xác nhận mật khẩu: ",
-                            hide: true),
+                          controller: repass,
+                          placeholder: "Xác nhận mật khẩu: ",
+                          hide: true,
+                        ),
                         InputField(
-                            controller: phone, placeholder: "Số điện thoại:"),
-                        InputField(controller: email, placeholder: "Email: "),
+                          controller: phone,
+                          placeholder: "Số điện thoại:",
+                        ),
+                        InputField(
+                          controller: email,
+                          placeholder: "Email: ",
+                        ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.6,
                           height: MediaQuery.of(context).size.height * 0.07,
@@ -211,29 +231,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.35,
-                          height: MediaQuery.of(context).size.height * 0.063,
-                          child: ElevatedButton(
-                            onPressed: () => {register()},
-                            style: const ButtonStyle(
-                              backgroundColor:
-                                  MaterialStatePropertyAll(Color(0xffDAEBFF)),
-                              maximumSize:
-                                  MaterialStatePropertyAll(Size(300, 500)),
-                              shadowColor:
-                                  MaterialStatePropertyAll(Colors.transparent),
-                            ),
-                            child: const Text(
-                              'Đăng kí',
-                              style: TextStyle(
-                                color: Color(0xff3184FF),
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
+                        isLoading
+                            ? SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                    color: Color(0xff3184FF),
+                                  ),
+                                ),
+                              )
+                            : SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.063,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    register();
+                                  },
+                                  style: const ButtonStyle(
+                                    backgroundColor: MaterialStatePropertyAll(
+                                        Color(0xffDAEBFF)),
+                                    maximumSize: MaterialStatePropertyAll(
+                                        Size(300, 500)),
+                                    shadowColor: MaterialStatePropertyAll(
+                                        Colors.transparent),
+                                  ),
+                                  child: const Text(
+                                    'Đăng kí',
+                                    style: TextStyle(
+                                      color: Color(0xff3184FF),
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
                       ]),
                     ),
                   ],
@@ -246,21 +278,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
 }
 
 class InputField extends StatelessWidget {
-  const InputField(
+  InputField(
       {super.key,
       required this.controller,
       required this.placeholder,
-      this.hide = false});
+      this.hide = false,
+      FocusNode? focus})
+      : focus = focus ?? FocusNode();
 
   final TextEditingController controller;
   final String placeholder;
   final bool hide;
+  final FocusNode focus;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         TextField(
+          focusNode: focus,
           enableSuggestions: false,
           autocorrect: false,
           keyboardType: TextInputType.text,

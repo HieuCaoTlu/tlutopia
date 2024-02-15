@@ -40,6 +40,7 @@ class _LibraryFragmentState extends State<LibraryFragment>
   List<String> getMajors(List<Book> list) {
     List<String> majors = [];
     for (var book in list) {
+      if (majors.contains(book.major)) continue;
       majors.add(book.major);
     }
     return majors;
@@ -48,13 +49,13 @@ class _LibraryFragmentState extends State<LibraryFragment>
   Future<void> fetchData() async {
     if (isDataFetched) return;
     isDataFetched = true;
-    var url = Uri.parse('http://192.168.1.8/aserver/get.php');
+    var url = Uri.parse('http://tlu-booklending.cloudns.be/api/books');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
       for (var jsonBook in jsonData) {
         Book book = Book(
-          jsonBook['book_id'],
+          jsonBook['id'],
           jsonBook['title'],
           jsonBook['author'],
           jsonBook['major'],
@@ -79,13 +80,14 @@ class _LibraryFragmentState extends State<LibraryFragment>
   }
 
   Future<void> fetchDataRandom() async {
-    var url = Uri.parse('http://192.168.1.8/aserver/getRandom.php');
+    var url = Uri.parse(
+        'http://tlu-booklending.cloudns.be/api/books/newest?major=$major');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
       for (var jsonBook in jsonData) {
         Book book = Book(
-          jsonBook['book_id'],
+          jsonBook['id'],
           jsonBook['title'],
           jsonBook['author'],
           jsonBook['major'],
@@ -106,13 +108,13 @@ class _LibraryFragmentState extends State<LibraryFragment>
   }
 
   Future<void> fetchDataNewest() async {
-    var url = Uri.parse('http://192.168.1.8/aserver/getNewest.php');
+    var url = Uri.parse('http://tlu-booklending.cloudns.be/api/books/newest');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
       for (var jsonBook in jsonData) {
         Book book = Book(
-          jsonBook['book_id'],
+          jsonBook['id'],
           jsonBook['title'],
           jsonBook['author'],
           jsonBook['major'],
@@ -160,7 +162,11 @@ class _LibraryFragmentState extends State<LibraryFragment>
                 left: MediaQuery.of(context).size.width * 0.07,
                 child: FloatingActionButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/flow',
+                      (route) => false,
+                    );
                   },
                   shape: const CircleBorder(),
                   elevation: 0.0,
@@ -234,8 +240,8 @@ class _LibraryFragmentState extends State<LibraryFragment>
                 child: Column(
                   children: [
                     BookContent(data, "Được yêu thích"),
-                    BookContent(dataNewest, "Khám phá: $major"),
-                    BookContent(dataRandom, "Dành cho bạn"),
+                    BookContent(dataRandom, "Khám phá: $major"),
+                    BookContent(dataNewest, "Mới nhất"),
                   ],
                 ),
               ),

@@ -18,18 +18,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     super.initState();
   }
 
-  void reset() {
-    setState(() {
-      print("Reset completed!");
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     Schedule schedule = Schedule.ofNonNull(context);
-    User user = User.ofNonNull(context);
-    schedule.update(user.user_id);
-    reset();
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Column(
@@ -75,7 +66,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               child: Column(
                 children: [
                   Text(
-                    "Nếu bạn có lịch hẹn, vui lòng đợi khoảng 30 giây để lịch hẹn được cập nhật.\n\n Nếu bạn mượn trong cùng một thời hạn, lịch hẹn sẽ được gộp chung",
+                    "Nếu bạn mượn trong cùng một thời hạn, lịch hẹn sẽ được gộp chung",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 14, color: Color.fromARGB(255, 81, 81, 81)),

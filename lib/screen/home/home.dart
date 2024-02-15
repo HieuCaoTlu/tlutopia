@@ -14,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-
   String getFirstName(String name) {
     List<String> names = name.split(' ');
     if (names.isNotEmpty) {
@@ -24,16 +23,18 @@ class HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void reset() {
-    setState(() {});
+  @override
+  void initState() {
+    super.initState();
+    print("hello");
   }
 
   @override
   Widget build(BuildContext context) {
     final User user = User.ofNonNull(context);
-    final Schedule schedule = Schedule.ofNonNull(context);
-    schedule.update(user.user_id);
-    reset();
+    Size screenSize = MediaQuery.of(context).size;
+    double imageSize = screenSize.width * 0.4;
+    double spacing = screenSize.width * 0.05;
     return SafeArea(
         top: false,
         child: Scaffold(
@@ -79,7 +80,89 @@ class HomeScreenState extends State<HomeScreen> {
                           height: MediaQuery.of(context).size.height * 0.02,
                           color: Colors.transparent,
                         ),
-                        const AllFeature()
+                        SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.asset(
+                                        'assets/images/ft1.png',
+                                        width: imageSize,
+                                        height: imageSize,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: spacing),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          settings: const RouteSettings(
+                                              name: "/library"),
+                                          builder: (context) =>
+                                              const LibraryScreen(),
+                                        ),
+                                      ).then((value) {
+                                        setState(() {
+                                          print("reloaded!");
+                                        });
+                                      });
+                                    },
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.asset(
+                                        'assets/images/ft2.png',
+                                        width: imageSize,
+                                        height: imageSize,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: spacing),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.asset(
+                                        'assets/images/ft3.png',
+                                        width: imageSize,
+                                        height: imageSize,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(width: spacing),
+                                  GestureDetector(
+                                    onTap: () {},
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.asset(
+                                        'assets/images/ft4.png',
+                                        width: imageSize,
+                                        height: imageSize,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        )
                       ]),
                 ),
               ],
@@ -89,14 +172,20 @@ class HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class RecentSchedule extends StatelessWidget {
+class RecentSchedule extends StatefulWidget {
   const RecentSchedule({super.key});
 
   @override
+  State<RecentSchedule> createState() => _RecentScheduleState();
+}
+
+class _RecentScheduleState extends State<RecentSchedule> {
+  @override
   Widget build(BuildContext context) {
-    final User user = User.ofNonNull(context);
+    setState(() {
+      print("Hello2");
+    });
     final Schedule schedule = Schedule.ofNonNull(context);
-    schedule.update(user.user_id);
     if (schedule.list.isNotEmpty) {
       return CustomScrollView(
         shrinkWrap: true,
@@ -137,108 +226,25 @@ class RecentSchedule extends StatelessWidget {
   }
 }
 
-class AllFeature extends StatelessWidget {
-  const AllFeature({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-    double imageSize = screenSize.width * 0.4;
-    double spacing = screenSize.width * 0.05;
-
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Feature(
-                  imageSize: imageSize,
-                  image: 'assets/images/ft1.png',
-                  number: 1),
-              SizedBox(width: spacing),
-              Feature(
-                  imageSize: imageSize,
-                  image: 'assets/images/ft2.png',
-                  number: 2),
-            ],
-          ),
-          SizedBox(height: spacing),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Feature(
-                  imageSize: imageSize,
-                  image: 'assets/images/ft3.png',
-                  number: 3),
-              SizedBox(width: spacing),
-              Feature(
-                  imageSize: imageSize,
-                  image: 'assets/images/ft4.png',
-                  number: 4),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class Feature extends StatelessWidget {
-  const Feature({
-    super.key,
-    required this.imageSize,
-    required this.image,
-    required this.number,
-  });
-
-  final double imageSize;
-  final int number;
-  final String image;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        switch (number) {
-          case 1:
-          case 2:
-          case 3:
-            {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      settings: const RouteSettings(name: "/library"),
-                      builder: (context) => const LibraryScreen()));
-            }
-          case 4:
-          default:
-        }
-      },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Image.asset(
-          image,
-          width: imageSize,
-          height: imageSize,
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-}
-
-class MemoLoan extends StatelessWidget {
+class MemoLoan extends StatefulWidget {
   final Loan loan;
   const MemoLoan(this.loan, {super.key});
 
   @override
+  State<MemoLoan> createState() => _MemoLoanState();
+}
+
+class _MemoLoanState extends State<MemoLoan> {
+  @override
   Widget build(BuildContext context) {
+    setState(() {
+      print("Hello3");
+    });
     return Material(
       child: GestureDetector(
         onTap: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => LoanDetail(loan)));
+              MaterialPageRoute(builder: (context) => LoanDetail(widget.loan)));
         },
         child: Container(
           margin: const EdgeInsets.only(bottom: 10),
@@ -274,7 +280,8 @@ class MemoLoan extends StatelessWidget {
                     style: TextStyle(fontSize: 10, fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    DateFormat('EEEE - dd.MM', 'vi_VN').format(loan.loan_date),
+                    DateFormat('EEEE - dd.MM', 'vi_VN')
+                        .format(widget.loan.loan_date),
                     style: const TextStyle(
                         fontSize: 15, fontWeight: FontWeight.w500),
                   ),

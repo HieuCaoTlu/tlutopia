@@ -16,18 +16,18 @@ class Book {
       this.publish_date, this.quantity, this.cover);
 
   Future<void> getBook() async {
-    var url = Uri.parse('http://192.168.1.8/aserver/book.php?book_id=$book_id');
+    var url = Uri.parse('http://tlu-booklending.cloudns.be/api/books/$book_id');
     try {
       var response = await http.get(url);
       if (response.statusCode == 200) {
         final Map<String, dynamic> data = json.decode(response.body);
-        book_id = int.parse(data['book_id']);
+        book_id = data['id'];
         title = data['title'] ?? '';
         author = data['author'] ?? '';
         description = data['description'] ?? '';
         publish_date = data['publish_date'] ?? '';
         major = data['major'] ?? '';
-        quantity = int.parse(data['quantity']);
+        quantity = data['quantity'];
         cover = data['cover'] ?? '';
       } else {
         print('Failed to fetch book data for book ID');

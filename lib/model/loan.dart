@@ -35,7 +35,7 @@ class Loan {
   }
 
   Future<void> createLoan(int userId) async {
-    var url = Uri.parse('http://192.168.1.8/aserver/new_loan.php');
+    var url = Uri.parse('http://tlu-booklending.cloudns.be/api/loans');
 
     for (final book in list) {
       var data = {
@@ -45,7 +45,7 @@ class Loan {
 
       var response = await http.post(url, body: data);
       final info = json.decode(response.body);
-      if (info['status'] == "success") {
+      if (info['id'] != null) {
         print('Loan created successfully for book ${book.book_id}');
       } else {
         print('Failed to create loan for book ${book.book_id}');

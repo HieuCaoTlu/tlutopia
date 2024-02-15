@@ -1,10 +1,12 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tlutopia/model/book.dart';
 import 'package:tlutopia/model/cart.dart';
 import 'package:tlutopia/model/loan.dart';
 import 'package:tlutopia/model/picker.dart';
+import 'package:tlutopia/model/schedule.dart';
+import 'package:tlutopia/model/user.dart';
 import 'package:tlutopia/screen/library/bookDetail.dart';
 import 'package:tlutopia/screen/schedule/loanDetail.dart';
 
@@ -18,214 +20,254 @@ class CartFragment extends StatefulWidget {
 class _CartFragmentState extends State<CartFragment> {
   DateTime start = DateTime.now();
   DateTime end = DateTime.now().add(const Duration(days: 14));
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     Cart cart = Cart.ofNonNull(context);
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(MediaQuery.of(context).size.width * 0.07,
-            MediaQuery.of(context).size.height * 0.07, 0, 0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FloatingActionButton(
-              heroTag: 'no',
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              shape: const CircleBorder(),
-              elevation: 0.0,
-              backgroundColor: Colors.grey.shade200, // Màu xám nhẹ
-              child: const Icon(Icons.arrow_back, color: Colors.black),
-            ),
-            const Divider(
-              height: 15,
-              color: Colors.transparent,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Giỏ sách",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: const Color(0xff5FA0FF)),
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.only(right: 40),
-                  child: Text(
-                    "Số lượng: ${cart.list.length}",
-                    style: const TextStyle(
-                        fontSize: 15,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700),
-                  ),
-                )
-              ],
-            ),
-            Visibility(
-              visible: cart.list.isNotEmpty,
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    height: 170,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: cart.list.length,
-                      separatorBuilder: (context, _) => const SizedBox(
-                        width: 20,
-                      ),
-                      itemBuilder: (context, index) =>
-                          appearList(cart, cart.list.reversed.toList()[index]),
+      body: isLoading
+          ? Center(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: const Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      color: Color(0xff3184FF),
                     ),
+                    Divider(
+                      height: 10,
+                      color: Colors.transparent,
+                    ),
+                    Text(
+                      "Đang tạo lịch hẹn, vui lòng đợi trong giây lát",
+                      style:
+                          TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : Padding(
+              padding: EdgeInsets.fromLTRB(
+                  MediaQuery.of(context).size.width * 0.07,
+                  MediaQuery.of(context).size.height * 0.07,
+                  0,
+                  0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  FloatingActionButton(
+                    heroTag: 'no',
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    shape: const CircleBorder(),
+                    elevation: 0.0,
+                    backgroundColor: Colors.grey.shade200, // Màu xám nhẹ
+                    child: const Icon(Icons.arrow_back, color: Colors.black),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 20, 40, 40),
+                  const Divider(
+                    height: 15,
+                    color: Colors.transparent,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Giỏ sách",
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.w700),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: const Color(0xff5FA0FF)),
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.only(right: 40),
+                        child: Text(
+                          "Số lượng: ${cart.list.length}",
+                          style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      )
+                    ],
+                  ),
+                  Visibility(
+                    visible: cart.list.isNotEmpty,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Ngày nhận',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Text(DateFormat('EEEE, d MMM', 'vi_VN')
-                                    .format(start)),
-                              ],
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                          height: 170,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: cart.list.length,
+                            separatorBuilder: (context, _) => const SizedBox(
+                              width: 20,
                             ),
-                            SetTime(
-                              select: start,
-                              onDateChanged: (newDate) {
-                                // setState(() {
-                                //   start = newDate;
-                                // });
-                              },
-                            )
-                          ],
-                        ),
-                        const Divider(
-                          height: 20,
-                          color: Colors.transparent,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Ngày trả',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                                Text(DateFormat('EEEE, d MMM', 'vi_VN')
-                                    .format(end)),
-                              ],
-                            ),
-                            SetTime(
-                              select: end,
-                              onDateChanged: (newDate) {
-                                // setState(() {
-                                //   end = newDate;
-                                // });
-                              },
-                            )
-                          ],
-                        ),
-                        const Divider(
-                          height: 20,
-                          color: Colors.transparent,
+                            itemBuilder: (context, index) => appearList(
+                                cart, cart.list.reversed.toList()[index]),
+                          ),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(right: 25),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          margin: const EdgeInsets.fromLTRB(0, 20, 40, 40),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(
-                                'Nơi nhận & trả',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Ngày nhận',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(DateFormat('EEEE, d MMM', 'vi_VN')
+                                          .format(start)),
+                                    ],
+                                  ),
+                                  SetTime(
+                                    select: start,
+                                    onDateChanged: (newDate) {
+                                      // setState(() {
+                                      //   start = newDate;
+                                      // });
+                                    },
+                                  )
+                                ],
                               ),
-                              Text(
-                                'Tầng 3',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600),
+                              const Divider(
+                                height: 20,
+                                color: Colors.transparent,
                               ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        'Ngày trả',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Text(DateFormat('EEEE, d MMM', 'vi_VN')
+                                          .format(end)),
+                                    ],
+                                  ),
+                                  SetTime(
+                                    select: end,
+                                    onDateChanged: (newDate) {
+                                      // setState(() {
+                                      //   end = newDate;
+                                      // });
+                                    },
+                                  )
+                                ],
+                              ),
+                              const Divider(
+                                height: 20,
+                                color: Colors.transparent,
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(right: 25),
+                                child: const Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Nơi nhận & trả',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      'Tầng 3',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Divider(
+                                height: 25,
+                                color: Colors.transparent,
+                              ),
+                              Center(
+                                child: Column(children: [
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.7,
+                                    child: const Text(
+                                      "Ấn xác nhận là bạn đã đồng ý với quy định mượn và trả sách của nhà trường.",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  Container(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.06,
+                                    margin: const EdgeInsets.only(top: 35),
+                                    decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                        colors: [
+                                          Color(0xffF64141),
+                                          Color(0xffFF6666)
+                                        ],
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                      ),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        checkingCart(context, start, end, cart);
+                                      },
+                                      style: const ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStatePropertyAll(
+                                                Colors.transparent),
+                                        shadowColor: MaterialStatePropertyAll(
+                                            Colors.transparent),
+                                      ),
+                                      child: const Text(
+                                        'Xác nhận',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                              )
                             ],
                           ),
                         ),
-                        const Divider(
-                          height: 25,
-                          color: Colors.transparent,
-                        ),
-                        Center(
-                          child: Column(children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              child: const Text(
-                                "Ấn xác nhận là bạn đã đồng ý với quy định mượn và trả sách của nhà trường.",
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            Container(
-                              height: MediaQuery.of(context).size.height * 0.06,
-                              margin: const EdgeInsets.only(top: 35),
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xffF64141),
-                                    Color(0xffFF6666)
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  checkingCart(context, start, end, cart);
-                                },
-                                style: const ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(
-                                      Colors.transparent),
-                                  shadowColor: MaterialStatePropertyAll(
-                                      Colors.transparent),
-                                ),
-                                child: const Text(
-                                  'Xác nhận',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ]),
-                        )
                       ],
                     ),
                   ),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -322,8 +364,8 @@ class _CartFragmentState extends State<CartFragment> {
     });
   }
 
-  void checkingCart(
-      BuildContext context, DateTime start, DateTime end, Cart cart) {
+  Future<void> checkingCart(
+      BuildContext context, DateTime start, DateTime end, Cart cart) async {
     // Kiểm tra end có lớn hơn start không
     if (end.isBefore(start)) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -370,12 +412,19 @@ class _CartFragmentState extends State<CartFragment> {
     setState(() {
       cart.confirmCart();
       cart.resetLoan();
+      isLoading = true;
     });
-    Navigator.of(context).push(
-        MaterialPageRoute(
-            builder: (context) => LoanDetail(
-                  loan,
-                  success: true,
-                )));
+
+    //Loading
+    Schedule schedule = Schedule.ofNonNull(context);
+    User user = User.ofNonNull(context);
+    await loan.createLoan(user.user_id);
+    await schedule.update(user.user_id);
+
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => LoanDetail(
+              loan,
+              success: true,
+            )));
   }
 }
