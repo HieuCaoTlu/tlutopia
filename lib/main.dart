@@ -11,7 +11,7 @@ import 'package:flutter/services.dart';
 void main() async {
   await initializeDateFormatting('vi_VN', null);
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(const MainApp());
 }
 
