@@ -151,7 +151,7 @@ class _LibraryFragmentState extends State<LibraryFragment>
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.125,
+                height: MediaQuery.of(context).size.height * 0.135,
                 child: const Image(
                   image: AssetImage('assets/images/bg3.png'),
                   fit: BoxFit.fill,
@@ -240,8 +240,8 @@ class _LibraryFragmentState extends State<LibraryFragment>
                 child: Column(
                   children: [
                     BookContent(data, "Được yêu thích"),
-                    BookContent(dataRandom, "Khám phá: $major"),
                     BookContent(dataNewest, "Mới nhất"),
+                    BookContent(dataRandom, "Khám phá: $major"),
                   ],
                 ),
               ),

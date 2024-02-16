@@ -142,12 +142,12 @@ class _InformationConfiguringState extends State<InformationConfiguring> {
                           user.student_name,
                           overflow: TextOverflow.clip,
                           style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w700),
+                              fontSize: 17, fontWeight: FontWeight.w700),
                         ),
                       ),
                       Row(
                         children: [
-                          Text("${user.student_code} | ${user.phone}")
+                          Text("${user.student_code} | ${user.phone}", style: const TextStyle(fontSize: 12),)
                         ],
                       )
                     ],

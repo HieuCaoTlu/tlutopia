@@ -46,12 +46,22 @@ class _SearchFragmentState extends State<SearchFragment> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Lọc theo ngành: '),
+          backgroundColor: Colors.white,
+          title: const Text(
+            'Lọc theo ngành: ',
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.w600),
+          ),
           content: SingleChildScrollView(
             child: ListBody(
               children: widget.majors
                   .map((major) => ListTile(
-                        title: Text(major),
+                        title: Text(
+                          major,
+                          style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
+                        ),
                         onTap: () {
                           setState(() {
                             selectedMajor = major;
@@ -88,7 +98,7 @@ class _SearchFragmentState extends State<SearchFragment> {
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height * 0.125,
+                    height: MediaQuery.of(context).size.height * 0.135,
                     child: const Image(
                       image: AssetImage('assets/images/bg3.png'),
                       fit: BoxFit.fill,
@@ -96,7 +106,7 @@ class _SearchFragmentState extends State<SearchFragment> {
                   ),
                   Positioned(
                     top: MediaQuery.of(context).size.height * 0.06,
-                    left: MediaQuery.of(context).size.width * 0.09,
+                    left: MediaQuery.of(context).size.width * 0.07,
                     child: FloatingActionButton(
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -211,7 +221,8 @@ class _SearchFragmentState extends State<SearchFragment> {
 
   Widget buildCard(Book book) {
     return SizedBox(
-      width: 130,
+      width: 100,
+      height: 250,
       child: GestureDetector(
         onTap: () {
           focus.unfocus();
@@ -224,11 +235,14 @@ class _SearchFragmentState extends State<SearchFragment> {
           children: [
             Hero(
               tag: 'book_${book.book_id}',
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image(
-                  image: NetworkImage(book.cover),
-                  fit: BoxFit.fill,
+              child: AspectRatio(
+                aspectRatio: 3 / 5,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image(
+                    image: NetworkImage(book.cover),
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
             ),

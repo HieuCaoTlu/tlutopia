@@ -33,7 +33,7 @@ class _BookContentState extends State<BookContent> {
           ),
         ),
         SizedBox(
-          height: 300,
+          height: 250,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: widget.collection.length,
@@ -48,64 +48,61 @@ class _BookContentState extends State<BookContent> {
     );
   }
 
-  Widget buildCard(Book item) => Container(
-        width: 130,
-        height: 300,
-        color: const Color(0xffECECEC),
-        child: Material(
-          child: InkWell(
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    DetailBook(item: item))),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                AspectRatio(
-                  aspectRatio: 3 / 5,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: Image(
-                      image: NetworkImage(item.cover),
-                      fit: BoxFit.fill,
-                    ),
+  Widget buildCard(Book item) => SizedBox(
+        width: 100,
+        height: 250,
+        child: GestureDetector(
+          onTap: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  DetailBook(item: item))),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AspectRatio(
+                aspectRatio: 3 / 5,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image(
+                    image: NetworkImage(item.cover),
+                    fit: BoxFit.fill,
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.only(right: 10),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          item.title,
-                          maxLines: 1,
-                          softWrap: false,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          overflow: TextOverflow.fade,
+              ),
+              Container(
+                margin: const EdgeInsets.only(right: 10),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.title,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
                         ),
-                        Text(
-                          item.author,
-                          maxLines: 1,
-                          softWrap: false,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          overflow: TextOverflow.fade,
+                        overflow: TextOverflow.fade,
+                      ),
+                      Text(
+                        item.author,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
                         ),
-                      ],
-                    ),
+                        overflow: TextOverflow.fade,
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );

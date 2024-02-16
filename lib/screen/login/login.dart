@@ -174,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.47,
+                            width: MediaQuery.of(context).size.width * 0.4,
                             height: MediaQuery.of(context).size.height * 0.063,
                             child: TextField(
                               obscureText: true,
@@ -201,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           isLoading
                               ? SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.35,
+                                      MediaQuery.of(context).size.width * 0.4,
                                   child: const Center(
                                     child: CircularProgressIndicator(
                                       color: Color(0xff3184FF),
@@ -210,7 +210,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 )
                               : SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.35,
+                                      MediaQuery.of(context).size.width * 0.4,
                                   height: MediaQuery.of(context).size.height *
                                       0.063,
                                   child: ElevatedButton(

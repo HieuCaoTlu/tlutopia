@@ -152,7 +152,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       padding: MaterialStatePropertyAll(
                           EdgeInsets.fromLTRB(10, 0, 10, 0)),
                       shadowColor: MaterialStatePropertyAll(Colors.transparent),
-                      backgroundColor: MaterialStatePropertyAll(Colors.white),
                       overlayColor: MaterialStatePropertyAll(Colors.white),
                       foregroundColor:
                           MaterialStatePropertyAll(Colors.transparent),
@@ -225,12 +224,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.6,
-                          height: MediaQuery.of(context).size.height * 0.07,
                           child: const Text(
                             "Nhấp vào đăng ký là bạn đã đồng ý với điều khoản của TLUtopia",
                             textAlign: TextAlign.center,
                           ),
                         ),
+                        const Divider(height: 20, color: Colors.transparent),
                         isLoading
                             ? SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.35,

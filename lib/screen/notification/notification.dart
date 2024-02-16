@@ -41,7 +41,7 @@ class _NotificationScreenState extends State<NotificationScreen>
         isLoading = false;
       });
     } else {
-      print('Request failed with status: ${response.statusCode}');
+      print('Request failed with status');
       setState(() {
         isLoading = false;
       });
