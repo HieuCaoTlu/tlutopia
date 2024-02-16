@@ -6,9 +6,12 @@ import 'package:tlutopia/model/schedule.dart';
 import 'package:tlutopia/model/user.dart';
 import 'package:tlutopia/screen/flow.dart';
 import 'screen/login/login.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   await initializeDateFormatting('vi_VN', null);
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   runApp(const MainApp());
 }
 
