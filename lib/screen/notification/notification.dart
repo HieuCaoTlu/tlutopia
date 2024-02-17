@@ -22,20 +22,22 @@ class _NotificationScreenState extends State<NotificationScreen>
   @override
   void initState() {
     super.initState();
-    // fetchData();
+    fetchData();
   }
 
   Future<void> fetchData() async {
     setState(() {
       isLoading = true;
     });
-    var url = Uri.parse('http://192.168.1.8/aserver/notify.php');
+    var url = Uri.parse('http://tlu-booklending.cloudns.be/api/notifications/');
     var response = await http.get(url);
     if (response.statusCode == 200) {
       var info = json.decode(response.body);
       for (var item in info) {
         data.add(NotificationInformation(
-            item['title'], item['source'], item['description']));
+            "Thông báo ngày ${item['date_created']}",
+            item['user_id'],
+            item['content']));
       }
       setState(() {
         isLoading = false;

@@ -296,9 +296,6 @@ class InputField extends StatelessWidget {
       children: [
         TextField(
           focusNode: focus,
-          enableSuggestions: false,
-          autocorrect: false,
-          keyboardType: TextInputType.text,
           controller: controller,
           obscureText: hide,
           decoration: InputDecoration(
