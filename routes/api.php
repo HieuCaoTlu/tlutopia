@@ -28,16 +28,21 @@ Route::put('users/{user}', [Api\UserController::class, 'update']);
 Route::delete('users/{user}', [Api\UserController::class, 'destroy']);
 
 Route::get('books', [Api\BookController::class, 'index']);
-Route::post('books', [Api\BookController::class, 'store']);
+//Route::post('books', [Api\BookController::class, 'store']);
 Route::get('books/random', [Api\BookController::class, 'random']);
 Route::get('books/newest', [Api\BookController::class, 'newest']);
 Route::get('books/{book}', [Api\BookController::class, 'show']);
-Route::put('books/{book}', [Api\BookController::class, 'update']);
-Route::delete('books/{book}', [Api\BookController::class, 'destroy']);
-
+//Route::put('books/{book}', [Api\BookController::class, 'update']);
+//Route::delete('books/{book}', [Api\BookController::class, 'destroy']);
 
 Route::get('loans', [Api\LoanController::class, 'index']);
 Route::post('loans', [Api\LoanController::class, 'store']);
 Route::get('loans/{loan}', [Api\LoanController::class, 'show']);
 Route::put('loans/{loan}', [Api\LoanController::class, 'update']);
-Route::delete('loans/{loan}', [Api\LoanController::class, 'destroy']);
+//Route::delete('loans/{loan}', [Api\LoanController::class, 'destroy']);
+
+Route::get('notifications', [Api\NotifyController::class, 'index']);
+Route::post('notifications', [Api\NotifyController::class, 'store']);
+Route::get('notifications/{notify}', [Api\NotifyController::class, 'show']);
+Route::put('notifications/{notify}', [Api\NotifyController::class, 'update']);
+//Route::delete('notification/{notify}', [Api\NotifyController::class, 'destroy']);
