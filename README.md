@@ -1,10 +1,10 @@
 # TLUtopia 🎏🪅
-> ## [17/2/24]📱 **TLUtopia Stable Version 1.0.1 Rreleased **:
+> ## [17/2/24]📱 TLUtopia Stable Version 1.0.1 Rreleased:
 - Tải ứng dụng để trải nghiệm tại: 
 - Cách để chạy sau khi clone ứng dụng: Bắt buộc phải gõ "flutter pub get" ở terminal để khởi tạo
 - Hiện tại ứng dụng có thể sử dụng được bình thường.
 
-> ## 🆕🎏 **Bản 1.0.1 có gì?**:
+> ## 🆕🎏 Bản 1.0.1 có gì?:
 - 😍 **TLUtopia có những tính năng sau đây**:
   + Truy cập và tìm kiếm tủ sách của thư viện trường, phân loại các đầu sách theo ngành và các mục chính.
   + Đặt mượn nhiều sách cùng một lúc trong một lịch hẹn, thời hạn hẹn mặc định là 2 tuần.
