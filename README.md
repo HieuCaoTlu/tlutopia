@@ -1,6 +1,7 @@
 # TLUtopia 🎏🪅
 > ## [17/2/24]📱 TLUtopia Stable Version 1.0.1 Rreleased:
-- Tải ứng dụng để trải nghiệm tại: [<img src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png" height="50">](https://www.amazon.com/gp/product/B0CVR5TM6C)
+- Tải ứng dụng để trải nghiệm tại đây:
+[<img src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-appstore-badge-english-black.png" height="50">](https://www.amazon.com/gp/product/B0CVR5TM6C)
 - Cách để chạy sau khi clone ứng dụng: Bắt buộc phải gõ "flutter pub get" ở terminal để khởi tạo
 - Hiện tại ứng dụng có thể sử dụng được bình thường.
 
