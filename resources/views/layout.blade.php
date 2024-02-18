@@ -16,7 +16,7 @@
         </ul>
         <div><a href="/admin/logout" class="hover:underline">Log out</a></div>
     </nav>
-    <div>
+    <div class="h-full">
         @yield('content')
     </div>
 </body>
