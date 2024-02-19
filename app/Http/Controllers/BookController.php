@@ -9,7 +9,7 @@ class BookController extends Controller
 {
     public function list() {
         return view('books.list', [
-            'bookList' => Book::orderBy('created_at')->paginate(10)
+            'bookList' => Book::paginate(10)
         ]);
     }
 
@@ -30,8 +30,8 @@ class BookController extends Controller
         return redirect()->back();
     }
 
-    public function details(Book $book) {
-        return view('books.details', [
+    public function show(Book $book) {
+        return view('books.show', [
             'book' => $book
         ]);
     }

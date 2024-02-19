@@ -12,11 +12,11 @@
             <table class="w-full border-collapse text-center border border-gray-500">
                 <thead>
                     <tr>
-                        <td class="border border-gray-500 sm:w-[80px] overflow-hidden">ID</td>
-                        <td class="border border-gray-500 sm:w-[500px] overflow-hidden">Title</td>
-                        <td class="border border-gray-500 sm:w-[250px] overflow-hidden">Author</td>
-                        <td class="border border-gray-500 sm:w-[250px] overflow-hidden">Major</td>
-                        <td class="border border-gray-500 sm:w-[100px] overflow-hidden">Quantity</td>
+                        <td class="border border-gray-500 sm:w-[80px] overflow-hidden font-semibold">ID</td>
+                        <td class="border border-gray-500 sm:w-[500px] overflow-hidden font-semibold">Title</td>
+                        <td class="border border-gray-500 sm:w-[250px] overflow-hidden font-semibold">Author</td>
+                        <td class="border border-gray-500 sm:w-[250px] overflow-hidden font-semibold">Major</td>
+                        <td class="border border-gray-500 sm:w-[100px] overflow-hidden font-semibold">Quantity</td>
                         <td class="border border-gray-500"></td>
                     </tr>
                 </thead>
@@ -33,6 +33,7 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="mt-3">{{$bookList->links()}}</div>
         </div>
     </div>
 </div>
