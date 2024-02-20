@@ -6,7 +6,7 @@ import 'package:tlutopia/model/book.dart';
 import 'package:tlutopia/model/schedule.dart';
 import 'package:tlutopia/model/user.dart';
 import 'package:tlutopia/screen/library/cartFragment.dart';
-
+import 'dart:math';
 import 'bookContent.dart';
 import 'searchFragment.dart';
 
@@ -47,6 +47,12 @@ class _LibraryFragmentState extends State<LibraryFragment>
     return majors;
   }
 
+  String getRandomMajor(List<Book> books) {
+    Random random = Random();
+    int randomIndex = random.nextInt(books.length);
+    return books[randomIndex].major;
+  }
+
   Future<void> fetchData() async {
     if (isDataFetched) return;
     isDataFetched = true;
@@ -65,14 +71,13 @@ class _LibraryFragmentState extends State<LibraryFragment>
           jsonBook['quantity'],
           jsonBook['cover'],
         );
-        if (jsonBook == jsonData.last) major = jsonBook['major'];
         if (mounted) {
           setState(() {
             data.add(book);
-            major;
           });
         }
       }
+      major = getRandomMajor(data);
       fetchDataRandom();
     } else {
       // Xử lý lỗi nếu có

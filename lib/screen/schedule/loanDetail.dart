@@ -106,7 +106,7 @@ class LoanDetail extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w600),
                           ),
-                          Text(DateFormat('EEEE', 'vi_VN')
+                          Text(DateFormat('EEEE - d/M/yyyy', 'vi_VN')
                               .format(loan.loan_date)),
                         ],
                       ),
@@ -116,7 +116,7 @@ class LoanDetail extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                             color: const Color(0xff5FA0FF)),
                         child: Text(
-                          DateFormat('d MMM', 'vi_VN').format(loan.loan_date),
+                          DateFormat('d/M', 'vi_VN').format(loan.loan_date),
                           style: const TextStyle(
                               fontSize: 20,
                               color: Colors.white,
@@ -139,8 +139,8 @@ class LoanDetail extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w600),
                           ),
-                          Text(
-                              'Thời hạn: ${differFromDate(loan.loan_date, loan.due_date)}'),
+                          Text(DateFormat('EEEE - d/M/yyyy', 'vi_VN')
+                              .format(loan.due_date)),
                         ],
                       ),
                       Container(
