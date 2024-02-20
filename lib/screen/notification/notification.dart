@@ -64,7 +64,6 @@ class _NotificationScreenState extends State<NotificationScreen>
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -106,7 +105,34 @@ class _NotificationScreenState extends State<NotificationScreen>
                       ],
                     ),
                     if (isLoading)
-                      const CircularProgressIndicator()
+                      Center(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Divider(
+                                height: 10,
+                                color: Colors.transparent,
+                              ),
+                              CircularProgressIndicator(
+                                color: Color(0xff3184FF),
+                              ),
+                              Divider(
+                                height: 10,
+                                color: Colors.transparent,
+                              ),
+                              Text(
+                                "Đang tải thông báo",
+                                style: TextStyle(
+                                    fontSize: 17, fontWeight: FontWeight.w500),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
                     else if (data.isEmpty)
                       const Center(
                         child: Column(

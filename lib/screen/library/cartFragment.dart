@@ -418,6 +418,10 @@ class _CartFragmentState extends State<CartFragment> {
     await loan.createLoan(user.user_id);
     await schedule.update(user.user_id);
 
+    setState(() {
+      isLoading = false;
+    });
+
     Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => LoanDetail(
               loan,

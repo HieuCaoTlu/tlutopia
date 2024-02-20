@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:tlutopia/model/book.dart';
+import 'package:tlutopia/model/cart.dart';
 import 'package:tlutopia/model/schedule.dart';
 import 'package:tlutopia/model/user.dart';
+import 'package:tlutopia/screen/library/cartFragment.dart';
 
 import 'bookContent.dart';
 import 'searchFragment.dart';
@@ -177,6 +179,25 @@ class _LibraryFragmentState extends State<LibraryFragment>
                     size: 25,
                   ),
                 ),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).size.height * 0.06,
+                right: MediaQuery.of(context).size.width * 0.07,
+                child: FloatingActionButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const CartFragment()));
+                    },
+                    shape: const CircleBorder(),
+                    elevation: 0.0,
+                    splashColor: Colors.white,
+                    heroTag: "cart",
+                    backgroundColor: Colors.grey.shade200,
+                    child: const Icon(
+                      Icons.shopping_bag_rounded,
+                      color: Colors.black,
+                      size: 25,
+                    )),
               ),
             ],
           ),

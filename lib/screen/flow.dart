@@ -50,28 +50,28 @@ class FlowScreenState extends State<FlowScreen> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home_rounded,
-              size: 30,
+              size: 25,
             ),
             label: 'Trang chủ',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.calendar_view_day_rounded,
-              size: 25,
+              size: 20,
             ),
             label: 'Lịch hẹn',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.notifications_rounded,
-              size: 25,
+              size: 20,
             ),
             label: 'Thông báo',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person_rounded,
-              size: 30,
+              size: 25,
             ),
             label: 'Cá nhân',
           ),
