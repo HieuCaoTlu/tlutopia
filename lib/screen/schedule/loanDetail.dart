@@ -106,7 +106,7 @@ class LoanDetail extends StatelessWidget {
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w600),
                           ),
-                          Text(DateFormat('d MMM', 'vi_VN')
+                          Text(DateFormat('EEEE', 'vi_VN')
                               .format(loan.loan_date)),
                         ],
                       ),
@@ -116,7 +116,7 @@ class LoanDetail extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20),
                             color: const Color(0xff5FA0FF)),
                         child: Text(
-                          DateFormat('EEEE', 'vi_VN').format(loan.due_date),
+                          DateFormat('d MMM', 'vi_VN').format(loan.loan_date),
                           style: const TextStyle(
                               fontSize: 20,
                               color: Colors.white,
@@ -231,14 +231,14 @@ class _MemoDetailBookState extends State<MemoDetailBook> {
         children: [
           Text(
             widget.book.title,
-            maxLines: 1,
-            overflow: TextOverflow.fade,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
           ),
           Text(
             widget.book.author,
             maxLines: 2,
-            overflow: TextOverflow.fade,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
           )
         ],

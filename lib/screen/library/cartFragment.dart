@@ -313,7 +313,7 @@ class _CartFragmentState extends State<CartFragment> {
                           maxLines: 3,
                           style: const TextStyle(
                             color: Colors.black,
-                            fontSize: 15,
+                            fontSize: 12,
                             fontWeight: FontWeight.w700,
                           ),
                           overflow: TextOverflow.fade,
@@ -324,7 +324,7 @@ class _CartFragmentState extends State<CartFragment> {
                         maxLines: 1,
                         style: const TextStyle(
                           color: Colors.black,
-                          fontSize: 15,
+                          fontSize: 10,
                           fontWeight: FontWeight.w400,
                         ),
                         overflow: TextOverflow.fade,
