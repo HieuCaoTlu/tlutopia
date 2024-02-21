@@ -46,10 +46,12 @@ class Schedule extends InheritedWidget {
         final List<dynamic> jsonData = json.decode(response.body);
         List<Loan> temp = [];
         for (var data in jsonData) {
+          if (data['status'] == 'Đã trả sách') continue;
           final loan = Loan();
           String name = data['book_title'];
           List<String> part = name.split(' - ');
-          Book book = Book(data['book_id'], part[0], part[1], '', '', '', 0, '');
+          Book book =
+              Book(data['book_id'], part[0], part[1], '', '', '', 0, '');
           loan.list.add(book);
           loan.loan_date = DateTime.parse(data['loan_date']);
           loan.due_date = DateTime.parse(data['due_date']);
