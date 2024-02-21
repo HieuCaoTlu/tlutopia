@@ -64,6 +64,7 @@ class _LibraryFragmentState extends State<LibraryFragment>
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
       for (var jsonBook in jsonData) {
+        if (jsonBook['quantity'] == 0) continue;
         Book book = Book(
           jsonBook['id'],
           jsonBook['title'],
@@ -95,6 +96,7 @@ class _LibraryFragmentState extends State<LibraryFragment>
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
       for (var jsonBook in jsonData) {
+        if (jsonBook['quantity'] == 0) continue;
         Book book = Book(
           jsonBook['id'],
           jsonBook['title'],
@@ -122,6 +124,7 @@ class _LibraryFragmentState extends State<LibraryFragment>
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = json.decode(response.body);
       for (var jsonBook in jsonData) {
+        if (jsonBook['quantity'] == 0) continue;
         Book book = Book(
           jsonBook['id'],
           jsonBook['title'],
