@@ -15,10 +15,10 @@
             <table class="w-full border-collapse text-center border border-gray-500">
                 <thead>
                     <tr>
-                        <td class="border border-gray-500 sm:w-[80px] overflow-hidden font-semibold">ID</td>
+                        <td class="border border-gray-500 sm:w-[80px] font-semibold">ID</td>
                         <td class="border border-gray-500 sm:w-[500px] overflow-hidden font-semibold">Username</td>
                         <td class="border border-gray-500 sm:w-[250px] overflow-hidden font-semibold">Title</td>
-                        <td class="border border-gray-500 sm:w-[250px] overflow-hidden font-semibold">Date created</td>
+                        <td class="border border-gray-500 sm:w-[250px] font-semibold">Date created</td>
                     </tr>
                 </thead>
                 <tbody>

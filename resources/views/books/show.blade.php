@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="h-full w-full flex items-center justify-center">
-    <div class="h-full w-full sm:h-[80%] sm:w-[80%] border border-black bg-white rounded-md relative p-5">
+    <div class="h-full w-full sm:h-[80%] sm:w-[80%] border border-black bg-white rounded-md relative p-5 mt-10">
         <div class="text-xl font-semibold border-b border-b-gray-400 h-10">Book details</div>
         <form action="/book/update" method="post" class="mt-5 w-full h-[calc(100%-40px)] overflow-y-auto ">
             @csrf
