@@ -256,12 +256,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             EdgeInsets.fromLTRB(10, 0, 10, 0)),
                         shadowColor:
                             MaterialStatePropertyAll(Colors.transparent),
-                        backgroundColor: MaterialStatePropertyAll(Colors.white),
-                        overlayColor: MaterialStatePropertyAll(Colors.white),
+                        backgroundColor: MaterialStatePropertyAll(Colors.transparent),
+                        overlayColor: MaterialStatePropertyAll(Colors.transparent),
                         foregroundColor:
                             MaterialStatePropertyAll(Colors.transparent),
                         surfaceTintColor:
-                            MaterialStatePropertyAll(Colors.white),
+                            MaterialStatePropertyAll(Colors.transparent),
                       ),
                       child: const Text(
                         "Đăng kí",
