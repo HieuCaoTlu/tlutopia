@@ -6,6 +6,9 @@
     <div class="w-full">
         <div class="mb-4 flex justify-between">
             <div class="font-semibold text-xl ">All users</div>
+            <form action="/user/list" method="GET">
+                <input type="text" id="query" name="query" class="border border-gray-500 rounded h-8 px-2" placeholder="Search...">
+            </form>
         </div>
         
         <div class="w-full">
@@ -18,6 +21,7 @@
                         <td class="border border-gray-500 overflow-hidden font-semibold">Email</td>
                         <td class="border border-gray-500 overflow-hidden font-semibold">Phone number</td>
                         <td class="border border-gray-500 overflow-hidden font-semibold">Status</td>
+                        <td class="border border-gray-500"></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -29,7 +33,7 @@
                             <td>{{$user->email}}</td>
                             <td>{{$user->phone}}</td>
                             <td>{{$user->status}}</td>
-                            
+                            <td><a href="/loan/list?query={{$user->student_code}}&type=student&user=1" target="_blank" class="text-blue-600 hover:underline">Loan list</a></td>
                         </tr>
                     @endforeach
                 </tbody>
