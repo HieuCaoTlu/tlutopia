@@ -29,6 +29,7 @@ class NotiCenter extends InheritedWidget {
   }
 
   Future<void> update() async {
+    list.clear();
     var url = Uri.parse('http://tlu-booklending.cloudns.be/api/notifications/');
     var response = await http.get(url);
     if (response.statusCode == 200) {

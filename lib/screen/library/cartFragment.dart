@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:tlutopia/model/book.dart';
 import 'package:tlutopia/model/cart.dart';
 import 'package:tlutopia/model/loan.dart';
-import 'package:tlutopia/model/picker.dart';
 import 'package:tlutopia/model/schedule.dart';
 import 'package:tlutopia/model/user.dart';
 import 'package:tlutopia/screen/library/bookDetail.dart';

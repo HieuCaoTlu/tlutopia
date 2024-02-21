@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tlutopia/model/loan.dart';
 import 'package:tlutopia/model/schedule.dart';
+import 'package:tlutopia/screen/schedule/loanAsk.dart';
 import 'package:tlutopia/screen/schedule/loanDetail.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -41,49 +42,26 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  "Lịch trình",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Lịch trình",
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                    ),
+                    LoanQuestions()
+                  ],
                 ),
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
-            child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: schedule.list.length,
-              itemBuilder: (context, index) {
-                return LoanCard(schedule.list[index]);
-              },
+            child: Column(
+              children: schedule.list.map((item) => LoanCard(item)).toList(),
             ),
           ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(60, 40, 60, 0),
-            child: const Center(
-              child: Column(
-                children: [
-                  Text(
-                    "Nếu bạn mượn trong cùng một thời hạn, lịch hẹn sẽ được gộp chung",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 14, color: Color.fromARGB(255, 81, 81, 81)),
-                  ),
-                  Divider(
-                    height: 20,
-                    color: Colors.transparent,
-                  ),
-                  Text(
-                    "Sau khi đặt lịch và tới thư viện, hãy tới quầy thủ thư để nhận sách",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: 14, color: Color.fromARGB(255, 81, 81, 81)),
-                  ),
-                ],
-              ),
-            ),
-          )
         ],
       ),
     );

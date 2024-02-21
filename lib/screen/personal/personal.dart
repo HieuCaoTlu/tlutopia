@@ -58,6 +58,7 @@ class PersonalScreenState extends State<PersonalScreen>
                         ),
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Flexible(
                               child: Text(
@@ -68,7 +69,7 @@ class PersonalScreenState extends State<PersonalScreen>
                             ),
                             Flexible(
                               child: Text(
-                                "Đang cập nhật cài đặt mới",
+                                "Đang cập nhật",
                                 style: TextStyle(
                                     fontSize: 13, fontWeight: FontWeight.w400),
                               ),

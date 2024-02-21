@@ -1,9 +1,7 @@
 // ignore_for_file: file_names
-
 import 'package:flutter/material.dart';
 import 'package:tlutopia/model/book.dart';
 import 'package:tlutopia/model/cart.dart';
-import 'package:tlutopia/model/schedule.dart';
 import 'package:tlutopia/screen/library/cartFragment.dart';
 
 class DetailBook extends StatelessWidget {
