@@ -11,18 +11,17 @@ class Loan extends Model
     protected $table = 'loan';
     public $timestamps = false;
     protected $fillable = [
-        'book_id',
         'user_id',
+        'book_id',
+        'book_title',
+        'book_cover',
         'loan_date',
+        'pickup_date',
         'return_date',
         'due_date',
         'status'
     ];
     use HasFactory;
-
-    public function book() : BelongsTo {
-        return $this->belongsTo(Book::class, 'book_id');
-    }
 
     public function user() : BelongsTo {
         return $this->belongsTo(User::class, 'user_id');

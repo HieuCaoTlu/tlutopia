@@ -2,7 +2,6 @@
 
 @section('content')
 @php
-    $book = $loan->book;
     $user = $loan->user;
 @endphp
 <div class="h-full w-full flex justify-center">
@@ -18,15 +17,11 @@
                         <div class="w-1/2">{{$loan->id}}</div>
                     </div>
                     <div class="flex w-full">
-                        <div class="w-1/2 font-medium">Book ID</div>
-                        <div class="w-1/2">{{$book->id}}</div>
-                    </div>
-                    <div class="flex w-full">
                         <div class="w-1/2 font-medium">Book title</div>
-                        <div class="w-1/2">{{$book->title}} - {{$book->author}}</div>
+                        <div class="w-1/2">{{$loan->book_title}}</div>
                     </div>
                     <div class="flex w-full items-center justify-center mt-4">
-                        <img src="{{$book->cover}}" alt="" class="w-[150px] shadow-black shadow-lg mb-5">
+                        <img src="{{$loan->book_cover}}" alt="" class="w-[150px] shadow-black shadow-lg mb-5">
                     </div>
                 </div>
                 <div class="w-full md:w-1/2 flex flex-col gap-2">
@@ -50,6 +45,18 @@
                         <div class="w-1/2 font-medium">Loan date</div>
                         <div class="w-1/2">{{$loan->loan_date}}</div>
                     </div>
+                    @if (isset($loan->pickup_date))
+                    <div class="flex w-full">
+                        <div class="w-1/2 font-medium">Pickup date</div>
+                        <div class="w-1/2">{{$loan->pickup_date}}</div>
+                    </div>
+                    @endif
+                    @if (isset($loan->return_date))
+                    <div class="flex w-full">
+                        <div class="w-1/2 font-medium">Return date</div>
+                        <div class="w-1/2">{{$loan->return_date}}</div>
+                    </div>
+                    @endif
                     <div class="flex w-full">
                         <div class="w-1/2 font-medium">Due date</div>
                         <div class="w-1/2">{{$loan->due_date}}</div>
