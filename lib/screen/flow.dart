@@ -64,7 +64,7 @@ class FlowScreenState extends State<FlowScreen> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.notifications_rounded,
-              size: 20,
+              size: 21,
             ),
             label: 'Thông báo',
           ),

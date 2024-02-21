@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:tlutopia/model/cart.dart';
+import 'package:tlutopia/model/noti.dart';
 import 'package:tlutopia/model/schedule.dart';
 import 'package:tlutopia/model/user.dart';
 import 'package:tlutopia/screen/flow.dart';
@@ -23,21 +24,23 @@ class MainApp extends StatelessWidget {
     return User(
       child: Schedule(
         child: Cart(
-          child: MaterialApp(
-            onGenerateRoute: (settings) {
-              if (settings.name == '/flow') {
+          child: NotiCenter(
+            child: MaterialApp(
+              onGenerateRoute: (settings) {
+                if (settings.name == '/flow') {
+                  return MaterialPageRoute(
+                    builder: (context) => const FlowScreen(),
+                  );
+                }
                 return MaterialPageRoute(
-                  builder: (context) => const FlowScreen(),
+                  builder: (context) => const ErrorPage(),
                 );
-              }
-              return MaterialPageRoute(
-                builder: (context) => const ErrorPage(),
-              );
-            },
-            theme: ThemeData(fontFamily: 'PlusJakartaSans'),
-            debugShowCheckedModeBanner: false,
-            home: const Scaffold(
-              body: LoginScreen(),
+              },
+              theme: ThemeData(fontFamily: 'PlusJakartaSans'),
+              debugShowCheckedModeBanner: false,
+              home: const Scaffold(
+                body: LoginScreen(),
+              ),
             ),
           ),
         ),

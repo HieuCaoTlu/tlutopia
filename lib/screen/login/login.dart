@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:tlutopia/model/noti.dart';
 import 'package:tlutopia/model/schedule.dart';
 import 'package:tlutopia/model/user.dart';
 import 'package:tlutopia/model/cart.dart';
@@ -56,6 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final User user = User.ofNonNull(context);
     final Schedule schedule = Schedule.ofNonNull(context);
     final Cart cart = Cart.ofNonNull(context);
+    final NotiCenter center = NotiCenter.ofNonNull(context);
     if (code.text == 'admin' && pass.text == 'admin') {
       user.student_name = "Admin";
       return;
@@ -96,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
         await schedule.update(user.user_id);
         cart.list.clear();
         cart.prohibited.clear();
+        center.update();
         success = true;
       }
     } catch (error) {
@@ -256,8 +259,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             EdgeInsets.fromLTRB(10, 0, 10, 0)),
                         shadowColor:
                             MaterialStatePropertyAll(Colors.transparent),
-                        backgroundColor: MaterialStatePropertyAll(Colors.transparent),
-                        overlayColor: MaterialStatePropertyAll(Colors.transparent),
+                        backgroundColor:
+                            MaterialStatePropertyAll(Colors.transparent),
+                        overlayColor:
+                            MaterialStatePropertyAll(Colors.transparent),
                         foregroundColor:
                             MaterialStatePropertyAll(Colors.transparent),
                         surfaceTintColor:

@@ -30,7 +30,9 @@ class SetTimeState extends State<SetTime> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => _selectDate(context),
+      onPressed: () {
+      // _selectDate(context)
+      },
       style: const ButtonStyle(
           shadowColor: MaterialStatePropertyAll(Colors.transparent),
           backgroundColor: MaterialStatePropertyAll(Color(0xffECECEC))),
@@ -40,17 +42,17 @@ class SetTimeState extends State<SetTime> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              DateFormat('EEEE', 'vi_VN').format(widget.select),
+              DateFormat('d/M', 'vi_VN').format(widget.select),
               style: const TextStyle(
                   fontSize: 17, color: Colors.black, fontWeight: FontWeight.w600),
             ),
-            const SizedBox(
-              width: 5,
-            ),
-            const Text(
-              "đổi",
-              style: TextStyle(fontSize: 14, color: Colors.black),
-            )
+            // const SizedBox(
+            //   width: 5,
+            // ),
+            // const Text(
+            //   "đổi",
+            //   style: TextStyle(fontSize: 14, color: Colors.black),
+            // )
           ],
         ),
       ),

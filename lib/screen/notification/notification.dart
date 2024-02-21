@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:tlutopia/model/noti.dart';
 import 'notiCard.dart';
-import 'notiInfo.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -13,52 +11,20 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen>
     with AutomaticKeepAliveClientMixin {
-  List<NotificationInformation> data = [];
-  bool isLoading = false;
-
   @override
   bool get wantKeepAlive => true;
 
-  @override
-  void initState() {
-    super.initState();
-    fetchData();
-  }
-
-  Future<void> fetchData() async {
+  void clearAllNotifications(BuildContext context) {
+    final center = NotiCenter.ofNonNull(context);
     setState(() {
-      isLoading = true;
-    });
-    var url = Uri.parse('http://tlu-booklending.cloudns.be/api/notifications/');
-    var response = await http.get(url);
-    if (response.statusCode == 200) {
-      var info = json.decode(response.body);
-      for (var item in info) {
-        data.add(NotificationInformation(
-            "Thông báo ngày ${item['date_created']}",
-            item['user_id'],
-            item['content']));
-      }
-      setState(() {
-        isLoading = false;
-      });
-    } else {
-      print('Request failed with status');
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  void clearAllNotifications() {
-    setState(() {
-      data.clear();
+      center.clear();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final center = NotiCenter.ofNonNull(context);
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -85,7 +51,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                           style: TextStyle(
                               fontSize: 30, fontWeight: FontWeight.w700),
                         ),
-                        if (data.isNotEmpty)
+                        if (center.list.isNotEmpty)
                           TextButton(
                             style: const ButtonStyle(
                               shadowColor:
@@ -93,7 +59,9 @@ class _NotificationScreenState extends State<NotificationScreen>
                               backgroundColor:
                                   MaterialStatePropertyAll(Color(0xffECECEC)),
                             ),
-                            onPressed: clearAllNotifications,
+                            onPressed: () {
+                              clearAllNotifications(context);
+                            },
                             child: const Text(
                               'Xóa tất cả',
                               style: TextStyle(
@@ -104,36 +72,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                           ),
                       ],
                     ),
-                    if (isLoading)
-                      Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          child: const Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Divider(
-                                height: 10,
-                                color: Colors.transparent,
-                              ),
-                              CircularProgressIndicator(
-                                color: Color(0xff3184FF),
-                              ),
-                              Divider(
-                                height: 10,
-                                color: Colors.transparent,
-                              ),
-                              Text(
-                                "Đang tải thông báo",
-                                style: TextStyle(
-                                    fontSize: 17, fontWeight: FontWeight.w500),
-                                textAlign: TextAlign.center,
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    else if (data.isEmpty)
+                    if (center.list.isEmpty)
                       const Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -152,7 +91,7 @@ class _NotificationScreenState extends State<NotificationScreen>
                         ),
                       )
                     else
-                      for (var item in data) NotificationCard(item),
+                      for (var item in center.list) NotificationCard(item),
                   ],
                 ),
               ),

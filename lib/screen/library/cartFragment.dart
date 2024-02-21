@@ -140,14 +140,25 @@ class _CartFragmentState extends State<CartFragment> {
                                             .format(start)),
                                       ],
                                     ),
-                                    SetTime(
-                                      select: start,
-                                      onDateChanged: (newDate) {
-                                        // setState(() {
-                                        //   start = newDate;
-                                        // });
-                                      },
-                                    )
+                                    Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            5, 12, 5, 12),
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.3,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            color: const Color(0xffECECEC),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Text(
+                                          DateFormat('d/M', 'vi_VN')
+                                              .format(start),
+                                          style: const TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w600),
+                                        ))
                                   ],
                                 ),
                                 const Divider(
@@ -163,7 +174,7 @@ class _CartFragmentState extends State<CartFragment> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         const Text(
-                                          'Ngày trả',
+                                          'Thời hạn',
                                           style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600),
@@ -172,13 +183,23 @@ class _CartFragmentState extends State<CartFragment> {
                                             .format(end)),
                                       ],
                                     ),
-                                    SetTime(
-                                      select: end,
-                                      onDateChanged: (newDate) {
-                                        // setState(() {
-                                        //   end = newDate;
-                                        // });
-                                      },
+                                    Container(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          5, 12, 5, 12),
+                                      width: MediaQuery.of(context).size.width *
+                                          0.3,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xffECECEC),
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: const Text(
+                                        "2 Tuần",
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     )
                                   ],
                                 ),
@@ -217,7 +238,7 @@ class _CartFragmentState extends State<CartFragment> {
                                       width: MediaQuery.of(context).size.width *
                                           0.7,
                                       child: const Text(
-                                        "Ấn xác nhận là bạn đã đồng ý với quy định mượn và trả sách của nhà trường.",
+                                        "Vui lòng tới nhận sách và trả sách không trễ so với lịch đã đặt. Ấn xác nhận là bạn đã đồng ý với quy định của nhà trường",
                                         textAlign: TextAlign.center,
                                       ),
                                     ),
@@ -424,7 +445,7 @@ class _CartFragmentState extends State<CartFragment> {
           content: Text('Đã xảy ra lỗi không mong muốn: $error'),
         ),
       );
-      
+
       return;
     }
 

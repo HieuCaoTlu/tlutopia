@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tlutopia/model/cart.dart';
+import 'package:tlutopia/model/noti.dart';
 import 'package:tlutopia/model/schedule.dart';
 import 'package:tlutopia/model/user.dart';
 import 'package:tlutopia/screen/flow.dart';
@@ -64,6 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     final User user = User.ofNonNull(context);
     final Cart cart = Cart.ofNonNull(context);
     final Schedule schedule = Schedule.ofNonNull(context);
+    final NotiCenter center = NotiCenter.ofNonNull(context);
     if (code.text.isEmpty ||
         pass.text.isEmpty ||
         name.text.isEmpty ||
@@ -119,6 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           schedule.update(user.user_id);
           cart.list.clear();
           cart.prohibited.clear();
+          center.update();
           success = true;
         });
       }
