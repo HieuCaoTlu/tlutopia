@@ -42,6 +42,8 @@ Route::post('/book/store', [BookController::class, 'store']);
 
 Route::post('/book/update', [BookController::class, 'update']);
 
+Route::post('/book/delete', [BookController::class, 'delete']);
+
 Route::get('/loan/list', [LoanController::class, 'list']);
 
 Route::get('/loan/{loan}', [LoanController::class, 'show']);
