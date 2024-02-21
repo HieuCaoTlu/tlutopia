@@ -5,6 +5,13 @@
     <div class="w-full">
         <div class="mb-4 flex justify-between">
             <div class="font-semibold text-xl ">All books</div>
+            <form action="/book/list" method="GET">
+                <input type="text" id="query" name="query" class="border border-gray-500 rounded h-8 px-2" placeholder="Search...">
+                <select name="type" id="type" class="border border-gray-500 rounded h-8">
+                    <option value="title">By title</option>
+                    <option value="author">By author</option>
+                </select>
+            </form>
             <button class="rounded-md bg-slate-200 hover:opacity-70 px-4 py-2" onclick="openAddBook()">Add book</button>
         </div>
         
@@ -16,7 +23,8 @@
                         <td class="border border-gray-500 sm:w-[500px] overflow-hidden font-semibold">Title</td>
                         <td class="border border-gray-500 sm:w-[250px] overflow-hidden font-semibold">Author</td>
                         <td class="border border-gray-500 sm:w-[250px] overflow-hidden font-semibold">Major</td>
-                        <td class="border border-gray-500 sm:w-[100px] overflow-hidden font-semibold">Quantity</td>
+                        <td class="border border-gray-500 sm:w-[100px] font-semibold">Quantity</td>
+                        <td class="border border-gray-500"></td>
                         <td class="border border-gray-500"></td>
                     </tr>
                 </thead>
@@ -29,6 +37,13 @@
                             <td>{{$book->major}}</td>
                             <td>{{$book->quantity}}</td>
                             <td><a href="/book/{{$book->id}}" target="_blank" class="text-blue-600 hover:underline">Details</a></td>
+                            <td>
+                                <form action="/book/delete" method="POST">
+                                @csrf
+                                    <input id="id" name="id" type="hidden" value="{{$book->id}}">
+                                    <button onclick="confirm('Are you sure?')" class="text-blue-600 hover:underline">Delete</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

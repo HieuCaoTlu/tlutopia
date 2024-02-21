@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use Mockery\Undefined;
 
 class BookController extends Controller
 {
-    public function list() {
+    public function list(Request $request) {
+        $query = $request['query'];
+        if ($query != null) {
+            $books = Book::where($request['type'], 'LIKE', "%{$query}%")->paginate(10);
+        } else {
+            $books = Book::paginate(10);
+        }
         return view('books.list', [
-            'bookList' => Book::paginate(10)
+            'bookList' => $books
         ]);
     }
 
@@ -49,5 +56,11 @@ class BookController extends Controller
         ]);
         $book->update($formFields);
         return redirect('/book/list');
+    }
+
+    public function delete(Request $request) {
+        $book = Book::find($request->input('id'));
+        $book->delete();
+        return redirect()->back()->with('message', 'Book deleted.');
     }
 }
