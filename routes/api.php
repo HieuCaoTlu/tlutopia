@@ -38,7 +38,7 @@ Route::get('books/{book}', [Api\BookController::class, 'show']);
 Route::get('loans', [Api\LoanController::class, 'index']);
 Route::post('loans', [Api\LoanController::class, 'store']);
 Route::get('loans/{loan}', [Api\LoanController::class, 'show']);
-Route::put('loans/{loan}', [Api\LoanController::class, 'update']);
+//Route::put('loans/{loan}', [Api\LoanController::class, 'update']);
 //Route::delete('loans/{loan}', [Api\LoanController::class, 'destroy']);
 
 Route::get('notifications', [Api\NotifyController::class, 'index']);
