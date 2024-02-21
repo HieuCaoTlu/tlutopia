@@ -53,10 +53,4 @@ class Loan {
       }
     }
   }
-
-  void getLoan() async {
-    for (var book in list) {
-      book.getBook();
-    }
-  }
 }

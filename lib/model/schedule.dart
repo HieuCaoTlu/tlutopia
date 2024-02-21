@@ -50,7 +50,6 @@ class Schedule extends InheritedWidget {
           String name = data['book_title'];
           List<String> part = name.split(' - ');
           Book book = Book(data['book_id'], part[0], part[1], '', '', '', 0, '');
-          await book.getBook();
           loan.list.add(book);
           loan.loan_date = DateTime.parse(data['loan_date']);
           loan.due_date = DateTime.parse(data['due_date']);
