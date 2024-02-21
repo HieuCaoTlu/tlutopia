@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Loan;
+use App\Models\Book;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -31,7 +32,11 @@ class LoanController extends Controller
                 'book_id' => 'required',
                 'user_id' => 'required',
             ]);
+            $book = Book::find($request['book_id']);
+            $formFields['book_title'] = $book->title . " - " . $book->author;
+            $formFields['book_cover'] = $book->cover;
             $formFields['loan_date'] = date('Y/m/d', time());
+            $formFields['pickup_date'] = null;
             $formFields['return_date'] = null;
             $formFields['due_date'] = Carbon::parse($formFields['loan_date'])->addDays(14)->format('Y/m/d');
             $formFields['status'] = "Chờ nhận sách";
