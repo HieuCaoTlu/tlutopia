@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use Exception;
 
 class AdminController extends Controller
 {
@@ -54,8 +55,12 @@ class AdminController extends Controller
         $formFields['created_at'] = date('Y/m/d h:i:s', time());
         $formFields['password'] = bcrypt($formFields['password']);
 
-        Admin::create($formFields);
+        try {
+            Admin::create($formFields);
+        } catch (Exception $e) {
+            return redirect()->back()->with('message', "Failed creating admin. ".$e->getMessage());
+        }
 
-        return redirect()->back();
+        return redirect()->back()->with('message', "Successfully created an admin.");
     }
 }
