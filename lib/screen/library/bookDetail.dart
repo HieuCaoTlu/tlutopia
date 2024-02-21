@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:tlutopia/model/book.dart';
 import 'package:tlutopia/model/cart.dart';
+import 'package:tlutopia/model/schedule.dart';
 import 'package:tlutopia/screen/library/cartFragment.dart';
 
 class DetailBook extends StatelessWidget {
@@ -158,26 +159,39 @@ class DetailBook extends StatelessWidget {
                             ),
                             child: ElevatedButton(
                               onPressed: () {
-                                if (cart.isContain(item)) {
+                                if ((cart.list.length +
+                                        cart.prohibited.length +
+                                        1) >
+                                    5) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
+                                    const SnackBar(
                                       content: Text(
-                                          'Không được thêm: ${item.title}'),
-                                      duration:
-                                          const Duration(milliseconds: 500),
+                                          'Bạn chỉ được mượn cùng một lúc tối đa 5 quyển sách'),
+                                      duration: Duration(milliseconds: 500),
                                     ),
                                   );
-                                } else if (item.quantity > 0) {
-                                  cart.add(item);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                          'Đã thêm vào giỏ: ${item.title}'),
-                                      duration:
-                                          const Duration(milliseconds: 500),
-                                    ),
-                                  );
-                                } else {}
+                                } else {
+                                  if (cart.isContain(item)) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'Không được thêm: ${item.title}'),
+                                        duration:
+                                            const Duration(milliseconds: 500),
+                                      ),
+                                    );
+                                  } else if (item.quantity > 0) {
+                                    cart.add(item);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'Đã thêm vào giỏ: ${item.title}'),
+                                        duration:
+                                            const Duration(milliseconds: 500),
+                                      ),
+                                    );
+                                  } else {}
+                                }
                               },
                               style: const ButtonStyle(
                                 backgroundColor: MaterialStatePropertyAll(
@@ -206,24 +220,38 @@ class DetailBook extends StatelessWidget {
                             ),
                             child: ElevatedButton(
                               onPressed: () {
-                                if (cart.isContainProhibited(item)) {
+                                if ((cart.list.length +
+                                        cart.prohibited.length +
+                                        1) >
+                                    5) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
+                                    const SnackBar(
                                       content: Text(
-                                          'Không được thêm: ${item.title}'),
-                                      duration:
-                                          const Duration(milliseconds: 500),
+                                          'Bạn chỉ được mượn cùng một lúc tối đa 5 quyển sách'),
+                                      duration: Duration(milliseconds: 500),
                                     ),
                                   );
-                                } else if (item.quantity > 0) {
-                                  if (!cart.list.contains(item)) {
-                                    cart.add(item);
-                                  }
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CartFragment()));
-                                } else {}
-                                cart.add(item);
+                                } else {
+                                  if (cart.isContainProhibited(item)) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            'Không được thêm: ${item.title}'),
+                                        duration:
+                                            const Duration(milliseconds: 500),
+                                      ),
+                                    );
+                                  } else if (item.quantity > 0) {
+                                    if (!cart.list.contains(item)) {
+                                      cart.add(item);
+                                    }
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const CartFragment()));
+                                  } else {}
+                                  cart.add(item);
+                                }
                               },
                               style: const ButtonStyle(
                                 backgroundColor: MaterialStatePropertyAll(

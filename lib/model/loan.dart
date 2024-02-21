@@ -14,7 +14,7 @@ class Loan {
   Loan();
 
   bool available(Book other) {
-    return list.any((book) => book.book_id == other.book_id);
+    return list.any((book) => book.title == other.title);
   }
 
   void add(Book book) {
@@ -45,7 +45,7 @@ class Loan {
 
       var response = await http.post(url, body: data);
       final info = json.decode(response.body);
-      if (info['id'] != null) {
+      if (info['book_title'] != null) {
         print('Loan created successfully for book ${book.book_id}');
       } else {
         print('Failed to create loan for book ${book.book_id}');

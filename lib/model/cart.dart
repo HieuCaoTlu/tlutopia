@@ -23,17 +23,17 @@ class Cart extends InheritedWidget {
 
   bool isContain(Book other) {
     for (var book in list) {
-      if (book.book_id == other.book_id) return true;
+      if (book.title == other.title) return true;
     }
     for (var book in prohibited) {
-      if (book.book_id == other.book_id) return true;
+      if (book.title == other.title) return true;
     }
     return false;
   }
 
   bool isContainProhibited(Book other) {
     for (var book in prohibited) {
-      if (book.book_id == other.book_id) return true;
+      if (book.title == other.title) return true;
     }
     return false;
   }

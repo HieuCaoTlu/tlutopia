@@ -49,8 +49,11 @@ class _LibraryFragmentState extends State<LibraryFragment>
 
   String getRandomMajor(List<Book> books) {
     Random random = Random();
-    int randomIndex = random.nextInt(books.length);
-    return books[randomIndex].major;
+    if (books.isNotEmpty) {
+      int randomIndex = random.nextInt(books.length);
+      return books[randomIndex].major;
+    }
+    return "Exception";
   }
 
   Future<void> fetchData() async {
@@ -78,7 +81,7 @@ class _LibraryFragmentState extends State<LibraryFragment>
         }
       }
       major = getRandomMajor(data);
-      fetchDataRandom();
+      if (major != null) fetchDataRandom();
     } else {
       // Xử lý lỗi nếu có
       print('Request failed with status: ${response.statusCode}');
@@ -264,7 +267,7 @@ class _LibraryFragmentState extends State<LibraryFragment>
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    BookContent(data, "Được yêu thích"),
+                    BookContent(data, "Tiêu biểu"),
                     BookContent(dataNewest, "Mới nhất"),
                     BookContent(dataRandom, "Khám phá: $major"),
                   ],

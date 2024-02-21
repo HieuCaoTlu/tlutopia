@@ -415,8 +415,18 @@ class _CartFragmentState extends State<CartFragment> {
     //Loading
     Schedule schedule = Schedule.ofNonNull(context);
     User user = User.ofNonNull(context);
-    await loan.createLoan(user.user_id);
-    await schedule.update(user.user_id);
+    try {
+      await loan.createLoan(user.user_id);
+      await schedule.update(user.user_id);
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Đã xảy ra lỗi không mong muốn: $error'),
+        ),
+      );
+      
+      return;
+    }
 
     setState(() {
       isLoading = false;

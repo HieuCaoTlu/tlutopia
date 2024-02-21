@@ -74,6 +74,12 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                     height: 20,
                     color: Colors.transparent,
                   ),
+                  Text(
+                    "Sau khi đặt lịch và tới thư viện, hãy tới quầy thủ thư để nhận sách",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 14, color: Color.fromARGB(255, 81, 81, 81)),
+                  ),
                 ],
               ),
             ),
