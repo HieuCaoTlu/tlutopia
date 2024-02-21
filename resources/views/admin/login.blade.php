@@ -31,6 +31,7 @@
                 <div class="text-red-500 text-sm my-1">{{$message}}</div>
             @enderror
             <button type="submit" class="border border-black rounded-lg px-6 py-2">Log in</button>
+            <img src="/logo.png" alt="" class="h-32 mt-5">
         </form>
     </div>
 </body>
