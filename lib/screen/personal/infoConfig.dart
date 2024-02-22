@@ -23,7 +23,7 @@ class _InformationConfiguringState extends State<InformationConfiguring> {
             Container(
               width: MediaQuery.of(context).size.width * 0.8,
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
+                  color: Theme.of(context).primaryColor, borderRadius: BorderRadius.circular(20)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -116,7 +116,7 @@ class _InformationConfiguringState extends State<InformationConfiguring> {
       child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: const Color(0xffECECEC),
+              color: Theme.of(context).primaryColor, //jjjjjjjjjjjjjjjjjjjjj
             borderRadius: BorderRadius.circular(30),
           ),
           child: Row(
