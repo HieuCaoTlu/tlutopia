@@ -19,6 +19,7 @@ class FlowScreenState extends State<FlowScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+
         controller: _pageController,
         onPageChanged: (index) {
           setState(() {
@@ -37,7 +38,7 @@ class FlowScreenState extends State<FlowScreen> {
         unselectedItemColor: Colors.black,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        selectedItemColor: const Color(0xff3788FF),
+        //selectedItemColor: const Color(0xff3788FF),
         currentIndex: _currentPageIndex,
         onTap: (index) {
           _pageController.animateToPage(
@@ -64,7 +65,7 @@ class FlowScreenState extends State<FlowScreen> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.notifications_rounded,
-              size: 21,
+              size: 20,
             ),
             label: 'Thông báo',
           ),
