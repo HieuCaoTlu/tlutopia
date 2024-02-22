@@ -87,16 +87,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   GestureDetector(
-                                    onTap: () {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'Tính năng đang được phát triển'),
-                                          duration: Duration(milliseconds: 500),
-                                        ),
-                                      );
-                                    },
+                                    onTap: () {},
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
                                       child: Image.asset(
@@ -142,16 +133,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   GestureDetector(
-                                    onTap: () {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                              'Tính năng đang được phát triển'),
-                                          duration: Duration(milliseconds: 500),
-                                        ),
-                                      );
-                                    },
+                                    onTap: () {},
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(20),
                                       child: Image.asset(
@@ -199,7 +181,8 @@ class RecentSchedule extends StatefulWidget {
 class _RecentScheduleState extends State<RecentSchedule> {
   @override
   Widget build(BuildContext context) {
-    setState(() {});
+    setState(() {
+    });
     final Schedule schedule = Schedule.ofNonNull(context);
     if (schedule.list.isNotEmpty) {
       return CustomScrollView(
@@ -225,7 +208,7 @@ class _RecentScheduleState extends State<RecentSchedule> {
         child: Container(
           margin: const EdgeInsets.all(30),
           decoration: BoxDecoration(
-            color: const Color(0xffECECEC),
+            color: Theme.of(context).primaryColor,  //aaaaaaaaaaaaaaaaaaaaaaaaa
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: const Padding(
@@ -252,7 +235,8 @@ class MemoLoan extends StatefulWidget {
 class _MemoLoanState extends State<MemoLoan> {
   @override
   Widget build(BuildContext context) {
-    setState(() {});
+    setState(() {
+    });
     return Material(
       child: GestureDetector(
         onTap: () {
