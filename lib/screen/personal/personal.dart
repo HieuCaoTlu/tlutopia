@@ -3,6 +3,7 @@ import 'package:tlutopia/model/cart.dart';
 import 'package:tlutopia/model/schedule.dart';
 import 'package:tlutopia/screen/login/login.dart';
 import 'package:tlutopia/screen/personal/askConfig.dart';
+import 'package:tlutopia/screen/personal/changeButton.dart';
 
 import 'infoConfig.dart';
 
@@ -58,7 +59,6 @@ class PersonalScreenState extends State<PersonalScreen>
                         ),
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Flexible(
                               child: Text(
@@ -69,7 +69,7 @@ class PersonalScreenState extends State<PersonalScreen>
                             ),
                             Flexible(
                               child: Text(
-                                "Đang cập nhật",
+                                "Đang cập nhật cài đặt mới",
                                 style: TextStyle(
                                     fontSize: 13, fontWeight: FontWeight.w400),
                               ),
@@ -81,6 +81,11 @@ class PersonalScreenState extends State<PersonalScreen>
                           color: Colors.transparent,
                         ),
                         const AskingConfiguration(),
+                        Divider(
+                          height: MediaQuery.of(context).size.height * 0.05,
+                          color: Colors.transparent,
+                        ),
+
                         Divider(
                           height: MediaQuery.of(context).size.height * 0.05,
                           color: Colors.transparent,
