@@ -7,7 +7,7 @@ import 'package:tlutopia/model/user.dart';
 import 'package:tlutopia/screen/flow.dart';
 import 'screen/login/login.dart';
 import 'package:flutter/services.dart';
-import 'package:tlutopia/provider/provider.dart';
+import 'package:tlutopia/personal/provider.dart';
 
 void main() async {
   await initializeDateFormatting('vi_VN', null);
