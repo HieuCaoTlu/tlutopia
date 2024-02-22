@@ -18,16 +18,28 @@
                         <td class="border border-gray-500 sm:w-[80px] font-semibold">ID</td>
                         <td class="border border-gray-500 sm:w-[500px] overflow-hidden font-semibold">Username</td>
                         <td class="border border-gray-500 sm:w-[250px] overflow-hidden font-semibold">Title</td>
+                        <td class="border border-gray-500">Admin privileges</td>
                         <td class="border border-gray-500 sm:w-[250px] font-semibold">Date created</td>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($adminList as $admin)
-                        <tr>
-                            <td>{{$admin->id}}</td>
-                            <td>{{$admin->username}}</td>
-                            <td>{{$admin->title}}</td>
-                            <td>{{$admin->created_at}}</td>
+                    @foreach ($adminList as $account)
+                        <tr class="border border-gray-300">
+                            <td>{{$account->id}}</td>
+                            <td>{{$account->username}}</td>
+                            <td>{{$account->title}}</td>
+                            <td>
+                                <form action="/admin/update" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id" type="id" value="{{$account->id}}">
+                                    <input type="checkbox" name="privileges" id="privileges" 
+                                        @disabled(!$admin->create_admin || $admin->id == $account->id) 
+                                        @checked($account->create_admin)
+                                        onchange="this.form.submit()"
+                                    >
+                                </form>
+                            </td>
+                            <td>{{$account->created_at}}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -67,16 +79,14 @@
                         @enderror
                     </div>
                     <div class=" flex items-center mb-4">
-                        <label for="create_admin" class="inline-block">Create admin privilege</label>
+                        <label for="create_admin" class="inline-block">Create admin and post notification privilege</label>
                         <input type="checkbox" id="create_admin" name="create_admin" class="ml-2">
                     </div>
                 </div>
-                
             </div>
             <div class="w-full flex justify-center mt-5">
                 <button type="submit" class="border border-black rounded-full w-24 h-12 mb-3">Save</button>
             </div>
-            
         </form>
     </div>
 </div>
