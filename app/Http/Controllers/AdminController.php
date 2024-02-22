@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\Loan;
+use App\Models\Book;
 use Exception;
 
 class AdminController extends Controller
@@ -62,5 +64,25 @@ class AdminController extends Controller
         }
 
         return redirect()->back()->with('message', "Successfully created an admin.");
+    }
+
+    public function update(Request $request) {
+        $account = Admin::find($request->input('id'));
+        $account->update([
+            'create_admin' => ($request->input('privileges')) ? true : false
+        ]);
+        return redirect()->back()->with('message', 'Privileges updated.');
+    }
+
+    public function dashboard() {
+        $lastestLoans = Loan::orderBy('loan_date', 'desc')->limit(5)->get();
+        $books = Book::withCount('loans')
+                ->orderBy('loans_count', 'desc')
+                ->limit(5)
+                ->get();
+        return view('admin.dashboard', [
+            'bookList' => $books,
+            'loanList' => $lastestLoans
+        ]);
     }
 }
