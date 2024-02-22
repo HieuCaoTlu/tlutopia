@@ -20,17 +20,30 @@
                 <thead>
                     <tr>
                         <td class="border border-gray-500 font-semibold">ID</td>
-                        <td class="border border-gray-500 overflow-hidden font-semibold">Student code</td>
-                        <td class="border border-gray-500 overflow-hidden font-semibold">Student name</td>
-                        <td class="border border-gray-500 sm:w-[500px] overflow-hidden font-semibold">Book title</td>
-                        <td class="border border-gray-500 font-semibold">Loan date</td>
+                        <td class="border border-gray-500 font-semibold">
+                            @if (isset($sortby) && $sortby == "student_code" && $order == "desc")
+                                <a href="/loan/list?sortby=student_code&order=asc" class="hover:underline">Student code &#8595;</a>
+                            @else
+                                <a href="/loan/list?sortby=student_code&order=desc" class="hover:underline">Student code &#8593;</a>
+                            @endif
+                        </td>
+                        <td class="border border-gray-500 font-semibold">Student name</td>
+                        <td class="border border-gray-500 sm:w-[500px] font-semibold">Book title</td>
+                        <td class="border border-gray-500 font-semibold">
+                            @if (isset($sortby) && $sortby == "loan_date" && $order == "asc")
+                                <a href="/loan/list?sortby=loan_date&order=desc" class="hover:underline">Loan date &#8593;</a>
+                            @else
+                                <a href="/loan/list?sortby=loan_date&order=asc" class="hover:underline">Loan date &#8595;</a>
+                            @endif
+                            
+                        </td>
                         <td class="border border-gray-500 font-semibold">Status</td>
                         <td class="border border-gray-500"></td>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($loanList as $loan)
-                        <tr>
+                        <tr class="border border-gray-300">
                             <td>{{$loan->id}}</td>
                             <td>{{$loan->user->student_code}}</td>
                             <td>{{$loan->user->student_name}}</td>
@@ -40,10 +53,10 @@
                                 <form action="/loan/update" method="POST">
                                     @csrf
                                     <input type="hidden" name="id" id="id" value="{{$loan->id}}">
-                                    <select onchange="return changeStatus(this)" name="status" id="status" class="border border-black rounded" @php if ($loan->status == "Đã trả sách") echo "disabled" @endphp>
+                                    <select onchange="return changeStatus(this)" name="status" id="status" class="border border-black rounded" @disabled($loan->status == "Đã trả sách")>
                                         <option value="Chờ nhận sách" @php echo ($loan->status == "Chờ nhận sách") ? "selected" : "hidden" @endphp>Chờ nhận sách</option>
-                                        <option value="Chưa trả sách" @php if ($loan->status == "Chưa trả sách") echo "selected" @endphp>Chưa trả sách</option>
-                                        <option value="Đã trả sách" @php if ($loan->status == "Đã trả sách") echo "selected" @endphp>Đã trả sách</option>
+                                        <option value="Chưa trả sách" @selected($loan->status == "Chưa trả sách")>Chưa trả sách</option>
+                                        <option value="Đã trả sách" @selected($loan->status == "Đã trả sách")>Đã trả sách</option>
                                     </select>
                                     <script>
                                         function changeStatus(page) {
