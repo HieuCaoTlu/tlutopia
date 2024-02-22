@@ -19,7 +19,7 @@ class Notification extends Model
 
     public $timestamps = false;
 
-    public function user(): BelongsTo {
-        return $this->belongsTo(User::class, 'user_id');
+    public function admin(): BelongsTo {
+        return $this->belongsTo(Admin::class, 'user_id');
     }
 }
