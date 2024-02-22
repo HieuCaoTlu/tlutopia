@@ -25,7 +25,7 @@ Route::get('users', [Api\UserController::class, 'index']);
 Route::post('users', [Api\UserController::class, 'store']);
 Route::get('users/{user}', [Api\UserController::class, 'show']);
 Route::put('users/{user}', [Api\UserController::class, 'update']);
-Route::delete('users/{user}', [Api\UserController::class, 'destroy']);
+//Route::delete('users/{user}', [Api\UserController::class, 'destroy']);
 
 Route::get('books', [Api\BookController::class, 'index']);
 //Route::post('books', [Api\BookController::class, 'store']);

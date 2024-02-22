@@ -26,14 +26,14 @@
                 </thead>
                 <tbody>
                     @foreach ($userList as $user)
-                        <tr>
+                        <tr class="border border-gray-300">
                             <td>{{$user->id}}</td>
                             <td>{{$user->student_code}}</td>
                             <td>{{$user->student_name}}</td>
                             <td>{{$user->email}}</td>
                             <td>{{$user->phone}}</td>
                             <td>{{$user->status}}</td>
-                            <td><a href="/loan/list?query={{$user->student_code}}&type=student&user=1" target="_blank" class="text-blue-600 hover:underline">Loan list</a></td>
+                            <td><a href="/loan/list?user_id={{$user->id}}" target="_blank" class="text-blue-600 hover:underline">Loans</a></td>
                         </tr>
                     @endforeach
                 </tbody>

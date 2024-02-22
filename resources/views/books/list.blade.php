@@ -30,7 +30,7 @@
                 </thead>
                 <tbody>
                     @foreach ($bookList as $book)
-                        <tr>
+                        <tr class="border border-gray-300">
                             <td>{{$book->id}}</td>
                             <td>{{$book->title}}</td>
                             <td>{{$book->author}}</td>
