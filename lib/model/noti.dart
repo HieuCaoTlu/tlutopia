@@ -41,6 +41,7 @@ class NotiCenter extends InheritedWidget {
             item['user_id'].toString(),
             item['content']));
       }
+      print(list.length);
     } else {
       print('Request failed with status');
     }

@@ -11,13 +11,19 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen>
     with AutomaticKeepAliveClientMixin {
+  bool isLoading = false;
+
   @override
   bool get wantKeepAlive => true;
 
-  void clearAllNotifications(BuildContext context) {
+  void updateNotification(BuildContext context) async {
     final center = NotiCenter.ofNonNull(context);
     setState(() {
-      center.clear();
+      isLoading = true;
+    });
+    await center.update();
+    setState(() {
+      isLoading = false;
     });
   }
 
@@ -51,47 +57,61 @@ class _NotificationScreenState extends State<NotificationScreen>
                           style: TextStyle(
                               fontSize: 30, fontWeight: FontWeight.w700),
                         ),
-                        if (center.list.isNotEmpty)
-                          TextButton(
-                            style: const ButtonStyle(
-                              shadowColor:
-                                  MaterialStatePropertyAll(Colors.transparent),
-                              backgroundColor:
-                                  MaterialStatePropertyAll(Color(0xffECECEC)),
-                            ),
-                            onPressed: () {
-                              clearAllNotifications(context);
-                            },
-                            child: const Text(
-                              'Xóa tất cả',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w400),
-                            ),
+                        TextButton(
+                          style: const ButtonStyle(
+                            shadowColor:
+                                MaterialStatePropertyAll(Colors.transparent),
+                            backgroundColor:
+                                MaterialStatePropertyAll(Color(0xffECECEC)),
                           ),
+                          onPressed: () {
+                            updateNotification(context);
+                          },
+                          child: const Text(
+                            'Cập nhật',
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
                       ],
                     ),
-                    if (center.list.isEmpty)
-                      const Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Divider(
-                              height: 25,
-                              color: Colors.transparent,
+                    isLoading
+                        ? Center(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Divider(
+                                    height: 25,
+                                    color: Colors.transparent,
+                                  ),
+                                  CircularProgressIndicator(
+                                    color: Color(0xff3184FF),
+                                  ),
+                                  Divider(
+                                    height: 10,
+                                    color: Colors.transparent,
+                                  ),
+                                  Text(
+                                    "Đang tải thông báo",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.w500),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              "Không có thông báo",
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w400),
-                            )
-                          ],
-                        ),
-                      )
-                    else
-                      for (var item in center.list) NotificationCard(item),
+                          )
+                        : Column(
+                            children: center.list
+                                .map((item) => NotificationCard(item))
+                                .toList(),
+                          ),
                   ],
                 ),
               ),
